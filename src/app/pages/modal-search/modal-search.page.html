@@ -72,7 +72,7 @@
       </div>
 
       <!--(click)="detailCategoria(duplicado.image_empresa, duplicado.categoria, duplicado.empresa)"-->
-      <div class="main" *ngFor="let duplicado of duplicados | filtroCategory: textoBuscarCat: 'categoria'">
+      <div class="main" *ngFor="let duplicado of duplicados | filtroCategory: textoBuscarCat: 'codigo_categoria'">
         <div (click)="CategorySelected(duplicado.image_empresa, duplicado.categoria, duplicado.empresa)" class="card_prod">
           <div class="div1">
 
@@ -92,6 +92,7 @@
         </div>
 
       </div>
+      
 
       <!--
         <div class="main" *ngFor="let producto of productos | filtroProd: textoBuscarProd">

@@ -112,6 +112,12 @@ export class PedidosListPage implements OnInit {
         this.pedidos_duplicados = Array.from(this.filtrPrepedidos.reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map()).values())
         this.sub_TotalFinal = this.pedidos_duplicados.map(data => data.subtotal).reduce((sum, current) => sum + current, 0)
         console.log("suma final: "+this.sub_TotalFinal)
+        if(this.sub_TotalFinal==0){
+          this.modalCtrl.dismiss();
+          document.getElementById('boton_pedido').style.display = 'none';
+        }else{
+          document.getElementById('boton_pedido').style.display = 'block';
+        }
       }
     )
 
@@ -280,9 +286,11 @@ export class PedidosListPage implements OnInit {
           text: 'Ok',
           role: 'ok',
           handler: () => {
+            
             this.productService.geteditPedidos().subscribe(data =>{
               data.map((item) => {
                 if(item.empresa === this.empresa_prepedido){
+                  
                   this.productService.deleteprepedidos(item.id_prepedido)
                 }
               })

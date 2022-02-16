@@ -10,7 +10,8 @@ import { ProductoService } from 'src/app/services/producto.service';
 })
 export class HistorialpedidosPage implements OnInit {
 
-  @Input() nombre_empresa
+  @Input() id_pedido
+  nombre_empresa
   pedidos = []
   vendedores = []
   vendedoreSelected = []
@@ -29,9 +30,10 @@ export class HistorialpedidosPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.showPedidoFinal()
-    this.subTotalFinal()
     this.showEmpresa()
+    this.subTotalFinal()
+    this.showPedidoFinal()
+
   }
 
   subTotalFinal(){
@@ -57,7 +59,7 @@ export class HistorialpedidosPage implements OnInit {
           }
         })
         this.vendedores.map(item => {
-           
+          
           if(item.nombre_empresa === this.nombre_empresa){
             this.direccion = item.direccion_vendedor
             this.telefono = item.telefono_vendedor
@@ -67,15 +69,19 @@ export class HistorialpedidosPage implements OnInit {
             console.log("email: "+this.email)
           }
         })
+        
       }
     )
   }
 
   showPedidoFinal()
   {
+    
     this.prodServ.getPedidoFinal().subscribe(data => {
       data.map((item) => {
-        if(item.empresa_pedido === this.nombre_empresa){
+
+        if(item.id_pedido === this.id_pedido){
+          
           this.pedidos.push({
             cantidad_pedido: item.cantidad_pedido,
             categoria_pedido: item.categoria_pedido,
@@ -84,9 +90,12 @@ export class HistorialpedidosPage implements OnInit {
             id_prod: item.id_prod,
             imagen_pedido: item.imagen_pedido,
             nombre_pedido: item.nombre_pedido,
-            precio_pedido: item.precio_pedido
+            precio_pedido: item.precio_pedido,
+            email: this.email,
+            telefono: this.telefono
           })
         }
+        console.log("email: "+this.telefono)
       })
     })
   }

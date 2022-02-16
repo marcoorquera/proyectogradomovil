@@ -61,7 +61,7 @@ export class RegisterPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'Se requiere contraseña.' },
-      { type: 'minlength', message: 'La contraseña debe ser mayor a 5 digitos.' }
+      { type: 'minlength', message: 'La contraseña debe ser mayor a 6 digitos.' }
     ]
   }
 
@@ -95,7 +95,7 @@ export class RegisterPage implements OnInit {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
         Validators.required
       ])),
     });

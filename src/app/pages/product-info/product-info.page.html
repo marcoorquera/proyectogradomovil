@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{nom_empresa}}</ion-title>
-    <ion-button (click)="salir()" fill="clear" slot="end">
+    <ion-button (click)="validationExit()" fill="clear" slot="end">
       <ion-icon slot="end" name="close-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -161,7 +161,7 @@
     
   </div>
 
-  <div class="pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty" class="pedido">
+  <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty" class="pedido">
     <button class="pedido-button">
       pedidos
     </button>  

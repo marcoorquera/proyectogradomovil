@@ -33,6 +33,7 @@ export class ModalSearchPage implements OnInit {
   busqueda =[];
   productos = [];
   duplicados = [];
+  categoria_buscar = [];
   categoriaprod = [];
   proveedores = [];
   uniqueprods = [];
@@ -159,14 +160,25 @@ export class ModalSearchPage implements OnInit {
             ...item.payload.val()
           }
         })
-        console.log("categoria_prod: "+this.categoriaprod[0])
+        //console.log("categoria_prod: "+this.categoriaprod[0])
         this.categoriaprod.map(item => {
           item.categoria,
           item.empresa,
-          item.image_empresa          
-        })
-
+          item.image_empresa
+          item.codigo_categoria          
+        }
+        )
+        console.log("categoria_prod: "+this.categoriaprod)
         this.duplicados = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
+        this.categoria_buscar = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
+        if(this.categoria_buscar){
+
+        }
+        
+        this.categoria_buscar.map(item => {
+          console.log("categoria_prod: "+ item.codigo_categoria)
+        })
+      
         /*
         this.duplicados =  this.categoriaprod.filter(arreglo => arreglo.categoria === 'veladores')
         this.duplicados.filter(duplicado => {

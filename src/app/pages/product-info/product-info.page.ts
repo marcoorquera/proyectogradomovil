@@ -6,6 +6,7 @@ import { ModalPedidoPage } from '../modal-pedido/modal-pedido.page';
 import { PedidosListPage } from '../pedidos-list/pedidos-list.page';
 import {AngularFireDatabase, AngularFireList, snapshotChanges} from '@angular/fire/compat/database'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-product-info',
@@ -124,8 +125,10 @@ export class ProductInfoPage implements OnInit {
               $key: item.key,
               ...item.payload.val()
             }
+            
           })
           this.filtrPrepedidosExist = this.prepedidosFiltrExist.filter(value =>  value.empresa === this.nom_empresa)
+          
           this.filtrPrepedidosExist.map(data => {
             console.log("data empresa: "+data.empresa + "data id: "+data.id_usuario)
             if(((data.empresa === 'undefined') || (data.empresa == null)) && ((data.id_usuario === 'undefined') || (data.id_usuario == null))){
@@ -138,6 +141,7 @@ export class ProductInfoPage implements OnInit {
           })
         }
       )
+      
     })
     
       
@@ -196,9 +200,6 @@ export class ProductInfoPage implements OnInit {
         this.prepedidosFiltr.map(data => {
           if(data.empresa === this.nom_empresa){
             this.filtrPrepedidos = this.prepedidosFiltr.filter(value => value.empresa === this.nom_empresa )
-            this.filtrPrepedidos.map(dta => {
-              
-            })
             if(this.prepedidosFiltr.length){
               this.prepedidoIsEmpty = false;
             }
@@ -434,7 +435,12 @@ export class ProductInfoPage implements OnInit {
   
   */
 
-  exit(){
+  async validationExit(){
+    if( this.filtrPrepedidosExist && this.filtrPrepedidosExist.length){
+      this.salir()
+    }else{
+      this.modalCtrl.dismiss() 
+    }
     
     
   }
@@ -454,9 +460,11 @@ export class ProductInfoPage implements OnInit {
           text: 'Ok',
           role: 'ok',
           handler: () => {
+            
             this.prodServ.geteditPedidos().subscribe(data =>{
               data.map((item) => {
                 if(item.empresa === this.nom_empresa){
+                  
                   this.prodServ.deleteprepedidos(item.id_prepedido)
                 }
               })
@@ -468,6 +476,7 @@ export class ProductInfoPage implements OnInit {
       ]
 
     })
+    
     await alert.present();
     //this.modalCtrl.dismiss();
   }

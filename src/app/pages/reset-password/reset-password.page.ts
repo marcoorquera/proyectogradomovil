@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-reset-password',
@@ -10,7 +10,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ResetPasswordPage implements OnInit {
 
   email_recover: string;
-  constructor(private authservice: AuthService) { }
+  constructor(private authservice: AuthService,
+    private navCtrl: NavController,) { }
 
   ngOnInit() {
   }
@@ -27,5 +28,9 @@ export class ResetPasswordPage implements OnInit {
       alert('Ingrese su correo electrónico')
     }
   }
+  goToLogin(){
+    this.navCtrl.navigateForward('/login');
+  }
+
 
 }

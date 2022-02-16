@@ -22,7 +22,7 @@ export class PedidoPage implements OnInit {
   pedidosAngularList: AngularFireList<any>
   filtrpedidos: any[];
 
-  pedidos_duplicados= [];
+  pedidos_duplicados = [];
 
   constructor(
     private afs: AngularFireDatabase,
@@ -40,22 +40,47 @@ export class PedidoPage implements OnInit {
     })
   }
 
-  
-  showEmpresa(id_user){
+
+
+  showEmpresa(id_user) {
     this.pedidosAngularList = this.afs.list('pedido_final/')
     this.pedidosAngularList.snapshotChanges().subscribe(
       list => {
         this.pedidosFltr = list.map(item => {
-          return{
+          return {
             $key: item.key,
             ...item.payload.val()
           }
         })
         this.filtrpedidos = this.pedidosFltr.filter(value => value.id_usuario === id_user)
-        this.pedidos_duplicados = Array.from(this.filtrpedidos.reduce((map, obj) => map.set(obj.fecha_pedido, obj), new Map()).values())
-        this.pedidos_duplicados.map(dta => {
-          console.log("fecha; "+dta.empresa_pedido)
+        this.filtrpedidos.map(dta => {
+          this.pedidos_duplicados.push({
+            cantidad_pedido: dta.cantidad_pedido,
+            categoria_pedido: dta.categoria_pedido,
+            empresa_pedido: dta.empresa_pedido,
+            fecha_pedido: ("0" + new Date(dta.fecha_pedido).getDate()).slice(-2) + '/' + (("0" + (new Date(dta.fecha_pedido).getMonth() + 1)).slice(-2)
+            ) + '/' + new Date(dta.fecha_pedido).getFullYear(),
+            id_pedido: dta.id_pedido,
+            id_prod: dta.id_prod,
+            imagen_empresa: dta.imagen_empresa,
+          })
+          this.pedidos_duplicados.reduce((map, obj) => map.set(obj.fecha_pedido, obj), new Map()).values()
+
+          this.pedidos_duplicados.sort(function (a, b) {
+            if (a.fecha_pedido <  b.fecha_pedido) {
+              return 1;
+            }
+            if (a.fecha_pedido > b.fecha_pedido) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });// console.log("fecha; "+new Date(dta.fecha_pedido))
+
         })
+        // this.pedidos_duplicados.map(dta => {
+        //   console.log("fecha; " + dta.categoria_pedido)
+        // })
       }
 
     )
@@ -78,17 +103,17 @@ export class PedidoPage implements OnInit {
     })
     */
 
-    
-    
+
+
   }
 
-  
-  pedidoFinal(id_user){
+
+  pedidoFinal(id_user) {
 
 
     this.productServ.getPedidoFinal().subscribe(data => {
       data.map((item) => {
-        if(id_user === item.id_usuario){
+        if (id_user === item.id_usuario) {
           this.pedidos.push(
             {
               empresa: item.empresa_pedido
@@ -100,40 +125,41 @@ export class PedidoPage implements OnInit {
             this.VendedorServ.getVendedores().subscribe(data => {
               data.map((vendedor) => {
                 //console.log("vendedor pedido: "+item.empresa)
-                //console.log("proveedor: "+vendedor.nombre_empresa)
-                if(item.empresa === vendedor.nombre_empresa){
+                console.log("proveedor: " + vendedor.nombre_empresa)
+                if (item.empresa === vendedor.nombre_empresa) {
                   //console.log("empresa verificada")
                   this.vendedores.push({
                     imagen: vendedor.image_vendedor,
                     nombre: vendedor.nombre_empresa
                   })
                   this.duplicado_vendedores = Array.from(this.vendedores.reduce((map, obj) => map.set(obj.nombre_empresa, obj), new Map()).values())
-                  
-                }  
+
+                }
               })
             })
           })
-          //console.log("duplicados: "+this.duplicados)
+          console.log("duplicados: " + this.duplicados)
         }
       })
     }
-      
+
     )
   }
 
-  
-  async getListpedidos(nombre){
+
+  async getListpedidos(pedido, nombre) {
     const modal = await this.modalCtrl.create({
       component: HistorialpedidosPage,
       componentProps: {
+        id_pedido: pedido,
         nombre_empresa: nombre
       }
     })
     await modal.present()
   }
-  
 
-  toggleMenu(){
+
+  toggleMenu() {
     this.MenuCtrl.toggle()
   }
 

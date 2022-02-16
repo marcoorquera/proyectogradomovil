@@ -10,7 +10,7 @@
 
 <ion-content >
   <div *ngFor="let vendedor of pedidos_duplicados">
-    <div (click)="getListpedidos(vendedor.empresa)" class="empresa" >
+    <div (click)="getListpedidos(vendedor.id_pedido, vendedor.empresa_pedido)" class="empresa" >
       <div  class="imagen">
         <img [src]="vendedor.imagen_empresa">
       </div>
