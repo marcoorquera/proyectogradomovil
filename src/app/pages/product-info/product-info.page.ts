@@ -470,6 +470,7 @@ export class ProductInfoPage implements OnInit {
               })
             })
             this.modalCtrl.dismiss()
+            window.location.reload();
           }
         }
         
