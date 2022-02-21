@@ -129,7 +129,7 @@ export class ModalPedidoPage implements OnInit {
     await alert.present();
   }
 
-  salir(){
+  exit(){
     this.modalCrtl.dismiss()
   }
 

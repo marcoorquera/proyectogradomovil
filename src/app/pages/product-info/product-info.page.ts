@@ -128,7 +128,7 @@ export class ProductInfoPage implements OnInit {
             
           })
           this.filtrPrepedidosExist = this.prepedidosFiltrExist.filter(value =>  value.empresa === this.nom_empresa)
-          
+          console.log("productos encontrados",this.filtrPrepedidosExist)
           this.filtrPrepedidosExist.map(data => {
             console.log("data empresa: "+data.empresa + "data id: "+data.id_usuario)
             if(((data.empresa === 'undefined') || (data.empresa == null)) && ((data.id_usuario === 'undefined') || (data.id_usuario == null))){
@@ -200,7 +200,12 @@ export class ProductInfoPage implements OnInit {
         this.prepedidosFiltr.map(data => {
           if(data.empresa === this.nom_empresa){
             this.filtrPrepedidos = this.prepedidosFiltr.filter(value => value.empresa === this.nom_empresa )
-            if(this.prepedidosFiltr.length){
+            if(this.prepedidosFiltr.length==0){
+              //this.prepedidosFiltr=[]
+              //console.log('entro true')
+              this.prepedidoIsEmpty = true;
+            }else{
+              //console.log('entro false')
               this.prepedidoIsEmpty = false;
             }
           }
@@ -314,6 +319,7 @@ export class ProductInfoPage implements OnInit {
         image: image_producto
       }
     })
+    this.prepedidosExist()
     return await modal.present();
   }
   
@@ -464,15 +470,24 @@ export class ProductInfoPage implements OnInit {
             this.prodServ.geteditPedidos().subscribe(data =>{
               data.map((item) => {
                 if(item.empresa === this.nom_empresa){
+                  console.log("estoy en el if del ok para eliminar")
                   
                   this.prodServ.deleteprepedidos(item.id_prepedido)
+                  
                 }
+
+
+
               })
-            })
+              this.nom_empresa=''
+              
+            } )
+            
             this.modalCtrl.dismiss()
-            window.location.reload();
+            //window.location.reload();
           }
         }
+        
         
       ]
 
@@ -480,6 +495,7 @@ export class ProductInfoPage implements OnInit {
     
     await alert.present();
     //this.modalCtrl.dismiss();
+    
   }
   
   

@@ -76,7 +76,8 @@ export class ProductoService {
       cantidad_pedido: cantidad,
       imagen_pedido: imagen,
       subtotal: subtotal 
-    })    
+    })   
+    console.log("paso 1 prodcuto añadido") 
     /*
       this.prepedidoList = this.afs.list('/prepedido/')    
     this.prepedidoList.snapshotChanges().pipe(
@@ -117,6 +118,7 @@ export class ProductoService {
 
   deleteprepedidos(id_prepedido){
     this.afs.database.ref('/prepedido/'+id_prepedido).remove()
+    console.log(" paso 3 Producto eliminado ",id_prepedido)
   }
 
   addPedidos(nombre_pedido: string, cantidad_pedido: number, precio_pedido: number, imagen_pedido: string, empresa: string){
@@ -130,6 +132,7 @@ export class ProductoService {
       imagen_pedido: imagen_pedido,
       empresa: empresa
     })
+    
   }
 
   geteditPedidos(){
