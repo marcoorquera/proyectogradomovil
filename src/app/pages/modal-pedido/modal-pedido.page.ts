@@ -40,6 +40,7 @@ export class ModalPedidoPage implements OnInit {
     this.auth.onAuthStateChanged(user => {
       this.user_id = user.uid
       this.total_prod = this.pedido * this.precio
+      console.log("modal pedidos nombre empresa",this.nombre_empresa)
     })
   }
 
@@ -77,33 +78,19 @@ export class ModalPedidoPage implements OnInit {
     }
   }
   
-  async contactoEmpresa(id_usuario, nombre_producto, precio, cantidad, imagen, subtotal){
-    //console.log("cantidad: "+cantidad)
-    //console.log("id: "+id_usuario)
-    this.prodServ.addeditPedidos(id_usuario, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal)
+   contactoEmpresa(id_usuario, nombre_producto, precio, cantidad, imagen, subtotal){
+     console.log("boton anadir precionado")
+
+    this.auth.onAuthStateChanged(user => {
+      this.prodServ.addeditPedidos(user.uid, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal)
           
     
-    this.pedido_guardado()
-    this.modalCrtl.dismiss()
-    
-    /*
-     const modal = await this.modalCrtl.create({
-      component: PedidosListPage,
-      componentProps: {
-        id_prod: this.id,
-        categoria: this.categoria_prod,
-        nombre: nombre_producto,
-        precio: precio,
-        cantidad: cantidad,
-        imagen: imagen,
-        id_user: this.nombre_empresa,
-        id_usuario: id_usuario  
-           
-      }
-    })
-    await modal.present();
+      
 
-    */
+     })
+     this.pedido_guardado()
+     this.modalCrtl.dismiss()
+     
     
   }
 
@@ -132,5 +119,19 @@ export class ModalPedidoPage implements OnInit {
   exit(){
     this.modalCrtl.dismiss()
   }
+
+  
+
+  // async validationExit(){
+   
+  //   if( this.sub_TotalFinal.length){
+  //     this.salir()
+  //   }else{
+  //     this.modalCtrl.dismiss() 
+  //   }
+    
+    
+  // }
+
 
 }

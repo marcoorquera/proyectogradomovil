@@ -43,7 +43,7 @@ export class PedidoPage implements OnInit {
 
 
   showEmpresa(id_user) {
-    this.pedidosAngularList = this.afs.list('pedido_final/')
+    this.pedidosAngularList = this.afs.list('pedido_final/'+id_user+"/")
     this.pedidosAngularList.snapshotChanges().subscribe(
       list => {
         this.pedidosFltr = list.map(item => {
@@ -111,7 +111,7 @@ export class PedidoPage implements OnInit {
   pedidoFinal(id_user) {
 
 
-    this.productServ.getPedidoFinal().subscribe(data => {
+    this.productServ.getPedidoFinal(id_user).subscribe(data => {
       data.map((item) => {
         if (id_user === item.id_usuario) {
           this.pedidos.push(

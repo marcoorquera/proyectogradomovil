@@ -58,6 +58,13 @@
     -->
     <div class="ruleta">
       <ion-segment style="--overflow: hidden;" scrollable>
+        <ion-item *ngFor="let c of categorias" >
+          <ion-col>
+            <div (click)="showCategoria('{{c.nombre_categoria}}')" class="sub_categoria">
+              <h3>Sillas</h3> 
+            </div>
+          </ion-col>
+        </ion-item>
         <ion-col>
           <div (click)="showCategoria('silla')" class="sub_categoria">
             <h3>Sillas</h3> 

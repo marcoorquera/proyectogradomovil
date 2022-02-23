@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ProductoService } from 'src/app/services/producto.service'; 
 import { ModalPedidoPage } from '../modal-pedido/modal-pedido.page';
@@ -14,26 +14,6 @@ import { empty } from 'rxjs';
   styleUrls: ['./product-info.page.scss'],
 })
 export class ProductInfoPage implements OnInit {
-  /*
-    id_prod: string;
-    pedido: number = 0;
-    total_prod:number = 0;
-    comentario: string;
-
-    isDisabled = false;
-
-  */
-
-  /*
-    @Input() name_prod;
-    @Input() descripcion_prod;
-    @Input() precio_prod;
-    @Input() cantidad_prod;
-    @Input() empresa_prov;
-    @Input() nombre_prov;
-    @Input() apellido_prov;
-
-  */
 
   productos = [];
   categoria = [];
@@ -48,7 +28,7 @@ export class ProductInfoPage implements OnInit {
 
   textoBuscarProd='';
 
-  prepedido = [];
+ 
 
   //ejemplo
   prodFiltr: any[];
@@ -96,7 +76,7 @@ export class ProductInfoPage implements OnInit {
 
   productosList: AngularFireList<any>
 
-  constructor(
+  constructor( private navCtrl: NavController,
     private modalCtrl: ModalController,
     public alertController: AlertController,
     private prodServ: ProductoService,
@@ -108,39 +88,26 @@ export class ProductInfoPage implements OnInit {
     this.getListProd();
     this.showCategorias();
     this.CategorySelected();
-    this.showPrepedido()
+    this.showPrepedidos()
     this.showProducts()
     this.productsFilterArray()
-    this.prepedidosExist()
+    
+    //this.prepedidosExist()
+    // console.log("id ",this.id)
+    // console.log("product-info nombre empresa ",this.img_empresa)
+    
+    // console.log("product-info NombreEmpresa ",this.nom_empresa)
   }
-
+prepedidos
   prepedidosExist(){
+   
     this.auth.onAuthStateChanged(user => {
-      console.log("uid: "+user.uid)
-      this.prepedidosExistAngularList = this.afs.list('prepedido/')
-      this.prepedidosExistAngularList.snapshotChanges().subscribe(
-        list => {
-          this.prepedidosFiltrExist = list.map(item => {
-            return{
-              $key: item.key,
-              ...item.payload.val()
-            }
-            
-          })
-          this.filtrPrepedidosExist = this.prepedidosFiltrExist.filter(value =>  value.empresa === this.nom_empresa)
-          console.log("productos encontrados",this.filtrPrepedidosExist)
-          this.filtrPrepedidosExist.map(data => {
-            console.log("data empresa: "+data.empresa + "data id: "+data.id_usuario)
-            if(((data.empresa === 'undefined') || (data.empresa == null)) && ((data.id_usuario === 'undefined') || (data.id_usuario == null))){
-              this.observador = false
-              console.log("observador: "+this.observador)
-            }else{
-              this.observador= true;
-              console.log("observador: "+this.observador)
-            }
-          })
-        }
-      )
+       this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
+          this.prepedidos=data
+         
+          console.log("verificando si exite prepedidos",this.prepedidos.length)
+      })
+      
       
     })
     
@@ -186,57 +153,33 @@ export class ProductInfoPage implements OnInit {
     )
   }
 
+  sub_TotalFinal
+  showPrepedidos(){
+    this.auth.onAuthStateChanged(user => {
+      this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
 
-  async showPrepedido(){
-    this.prepedidosAngularList = this.afs.list('prepedido/')
-    this.prepedidosAngularList.snapshotChanges().subscribe(
-      list => {
-        this.prepedidosFiltr = list.map(item => {
-          return {
-            $key: item.key,
-            ...item.payload.val()
-          }
-        })
-        this.prepedidosFiltr.map(data => {
-          if(data.empresa === this.nom_empresa){
-            this.filtrPrepedidos = this.prepedidosFiltr.filter(value => value.empresa === this.nom_empresa )
-            if(this.prepedidosFiltr.length==0){
-              //this.prepedidosFiltr=[]
-              //console.log('entro true')
-              this.prepedidoIsEmpty = true;
-            }else{
-              //console.log('entro false')
-              this.prepedidoIsEmpty = false;
-            }
-          }
-        })
-      }
-    )
-    /*
-      this.prodServ.geteditPedidos().subscribe(data => {
-      data.map((item => {
-        if(item.empresa === this.nom_empresa){
-          this.prepedido.push({
-            nombre_pedido: item.nombre_pedido
-            
-          })
-          if(this.prepedido.length){
-            this.prepedidoIsEmpty = false;
-          }
+        this.sub_TotalFinal=data
+        console.log("el valor de lso datos son ",this.sub_TotalFinal)
+        if(this.sub_TotalFinal.length==0){
           
+          this.prepedidoIsEmpty = true;
+        }else{
+          this.prepedidoIsEmpty = false;
         }
-      }))
-    })
-    */
-    
+      })
+      
+    })    
   }
-
+  
   async goToPedidoList(){
     //console.log("empresa1: "+this.nom_empresa)
     const modal = await this.modalCtrl.create({
       component: PedidosListPage,
       componentProps: {
-        empresa_prepedido: this.nom_empresa
+        empresa_prepedido: this.nom_empresa,
+        imagen_empresa: this.img_empresa
+
+      
       }
     })
     await modal.present()
@@ -305,6 +248,8 @@ export class ProductInfoPage implements OnInit {
 
 
   async modalPedido(nombre_empresa, id_prod, nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto,image_producto){
+    
+    console.log("Entrando modalPedido")
     const modal = await this.modalCtrl.create({
       component: ModalPedidoPage,
       componentProps: {
@@ -319,7 +264,7 @@ export class ProductInfoPage implements OnInit {
         image: image_producto
       }
     })
-    this.prepedidosExist()
+    
     return await modal.present();
   }
   
@@ -442,7 +387,8 @@ export class ProductInfoPage implements OnInit {
   */
 
   async validationExit(){
-    if( this.filtrPrepedidosExist && this.filtrPrepedidosExist.length){
+   
+    if( this.sub_TotalFinal.length){
       this.salir()
     }else{
       this.modalCtrl.dismiss() 
@@ -466,25 +412,20 @@ export class ProductInfoPage implements OnInit {
           text: 'Ok',
           role: 'ok',
           handler: () => {
+
+            this.auth.onAuthStateChanged(user => { 
             
-            this.prodServ.geteditPedidos().subscribe(data =>{
-              data.map((item) => {
-                if(item.empresa === this.nom_empresa){
+         
                   console.log("estoy en el if del ok para eliminar")
                   
-                  this.prodServ.deleteprepedidos(item.id_prepedido)
+                  this.prodServ.deleteprepedidos(user.uid)})
+
                   
-                }
-
-
-
-              })
-              this.nom_empresa=''
-              
-            } )
+                  
+                
             
             this.modalCtrl.dismiss()
-            //window.location.reload();
+            location.reload();
           }
         }
         
@@ -499,4 +440,6 @@ export class ProductInfoPage implements OnInit {
   }
   
   
+  
+
 }

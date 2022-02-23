@@ -39,7 +39,10 @@ export class MenuPage implements OnInit {
   
 
   goToHome(){
+    
     this.navCtrl.navigateForward("/menu/home")
+    
+    
   }
 
   goToProfile(){

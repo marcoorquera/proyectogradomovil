@@ -32,6 +32,7 @@ export class PedidoFinalPage implements OnInit {
 
   ngOnInit() {
     this.showEmpresa()
+    console.log("pedido-final ",this.nombre_empresa)
   }
 
   /*   

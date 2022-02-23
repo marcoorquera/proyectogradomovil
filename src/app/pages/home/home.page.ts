@@ -36,6 +36,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     //this.getProducto()
     this.getEmpresa()
+    
   }
   
   buscar(event: CustomEvent){    
@@ -43,6 +44,7 @@ export class HomePage implements OnInit {
     //console.log("busqueda: "+this.textoBuscar)
   }
   getEmpresa(){
+    
     this.vendedorService.getVendedor().subscribe(
       list => {
         this.vendedores = list.map(item => {

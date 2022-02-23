@@ -29,8 +29,8 @@ export class ProductoService {
     )
   }
 
-  getPedidoFinal(){
-    this.pedidoFinalList = this.afs.list('/pedido_final/');
+  getPedidoFinal(uid){
+    this.pedidoFinalList = this.afs.list('/pedido_final/'+uid+"/");
     return this.pedidoFinalList.snapshotChanges().pipe(
       map(changes => 
         changes.map(c => ({
@@ -42,12 +42,12 @@ export class ProductoService {
   }
 
 
-  addPedidoFinal(id_usuario: string, nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa){
-    const pedido = this.afs.database.ref('/pedido_final/')
+  addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa){
+    const pedido = this.afs.database.ref('/pedido_final/'+id_usuario+"/")
     const id_pedido_generate = pedido.push().key
-
-    this.afs.object('/pedido_final/'+id_pedido_generate).set({
-      id_pedido: id_pedido_generate,
+console.log("añadiendo a pedido final")
+    this.afs.object('/pedido_final/'+id_usuario+"/"+id_pedido).update({
+      id_pedido: id_pedido,
       id_usuario: id_usuario,
       nombre_pedido: nombre,
       precio_pedido: precio,
@@ -62,10 +62,10 @@ export class ProductoService {
     })
   }
   addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number){
-    const prepedido = this.afs.database.ref('/prepedido/')
+    const prepedido = this.afs.database.ref('/prepedido/'+id_usuario+"/")
     const id_prepedido = prepedido.push().key
-    console.log("empresa_pedido: "+nombre_empresa) 
-    this.afs.object('prepedido/'+id_prepedido).set({
+  
+    this.afs.object('prepedido/'+id_usuario+"/"+id_prepedido).update({
       id_prepedido: id_prepedido,
       id_prod: id,
       id_usuario: id_usuario,
@@ -117,14 +117,16 @@ export class ProductoService {
 
 
   deleteprepedidos(id_prepedido){
+    
     this.afs.database.ref('/prepedido/'+id_prepedido).remove()
-    console.log(" paso 3 Producto eliminado ",id_prepedido)
+    
   }
 
   addPedidos(nombre_pedido: string, cantidad_pedido: number, precio_pedido: number, imagen_pedido: string, empresa: string){
+    console.log("anadiendo a prepedidos")
     const pedido = this.afs.database.ref('/pedidos/')
     const id_pedido = pedido.push().key
-    this.afs.object('/pedidos/'+id_pedido).set({
+    this.afs.object('/pedidos/'+id_pedido).update({
       id_pedido: id_pedido,
       nombre_pedido: nombre_pedido,
       cantidad_pedido: cantidad_pedido,
@@ -145,6 +147,21 @@ export class ProductoService {
         }))
       )
     )
+  }
+  prodList: AngularFireList<any>
+  obtenerPrepedidos(uid){
+    this.prodList = this.afs.list('/prepedido/'+uid+"/");
+    console.log(this.prodList)
+    return this.prodList.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({
+          key: c.payload,
+          ...c.payload.val()
+        }))
+      )
+    )
+      
+  
   }
 
   getPedidos(){
@@ -171,4 +188,10 @@ export class ProductoService {
     )
       
   }
+categorias
+  getCategor(){
+   this.categorias= this.afs.list("/categoria").snapshotChanges()
+
+   return this.categorias
+} 
 }
