@@ -136,6 +136,7 @@ prepedidos
   }
   
   showProducts(){
+    
     this.mainProds = false
     this.selection = false;
     this.listprodExistAngularList = this.afs.list('producto/')
@@ -153,21 +154,22 @@ prepedidos
     )
   }
 
-  sub_TotalFinal
+  datos
   showPrepedidos(){
     this.auth.onAuthStateChanged(user => {
       this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
 
-        this.sub_TotalFinal=data
-        console.log("el valor de lso datos son ",this.sub_TotalFinal)
-        if(this.sub_TotalFinal.length==0){
+        this.datos=data
+        console.log("el valor de lso datos son ",this.datos)
+        if(this.datos.length==0){
           
           this.prepedidoIsEmpty = true;
         }else{
           this.prepedidoIsEmpty = false;
         }
       })
-      
+         
+     
     })    
   }
   
@@ -388,7 +390,7 @@ prepedidos
 
   async validationExit(){
    
-    if( this.sub_TotalFinal.length){
+    if( this.datos.length){
       this.salir()
     }else{
       this.modalCtrl.dismiss() 

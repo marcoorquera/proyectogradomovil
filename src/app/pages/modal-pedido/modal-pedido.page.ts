@@ -88,13 +88,24 @@ export class ModalPedidoPage implements OnInit {
       
 
      })
+
      this.pedido_guardado()
      this.modalCrtl.dismiss()
+     
      
     
   }
 
   async pedido_guardado() {
+//     this.nombre='';
+// this.proveedor='';
+// this.descripcion='';
+// this.categoria_prod='';
+// this.precio='';
+// this.cantidad='';
+// this.image='';
+// this.id='';
+// this.nombre_empresa='';
     const alert = await this.alertCtrl.create({
       header: 'Pedido guardado',
       message: 'Producto añadido al pedido.',

@@ -51,6 +51,7 @@ export class PedidosListPage implements OnInit {
     this.auth.onAuthStateChanged(user => {
       this.user_id = user.uid
       this.showPrepedidos()
+      
     })
 
 
@@ -61,7 +62,7 @@ export class PedidosListPage implements OnInit {
 
 
 
-  notfunctionjjjjj() {
+  notfunction() {
     this.pedidos = []
     this.productService.geteditPedidos().subscribe(data => {
       data.map((item) => {
@@ -99,22 +100,43 @@ export class PedidosListPage implements OnInit {
       })
     })
   }
-
+  listadoProducto
   showPrepedidos() {
     this.auth.onAuthStateChanged(user => {
       this.afs.list('prepedido/' + user.uid + "/").valueChanges().subscribe(data => {
 
-        this.sub_TotalFinal = data
-        console.log("el valor de lso datos son ", this.sub_TotalFinal)
-        if (this.sub_TotalFinal.length == 0) {
+        this.listadoProducto = data
+        console.log("el valor de lso datos son ", this.listadoProducto)
+        if (this.listadoProducto.length == 0) {
           this.modalCtrl.dismiss();
           document.getElementById('boton_pedido').style.display = 'none';
         } else {
           document.getElementById('boton_pedido').style.display = 'block';
         }
       })
+      
+      this.prepedidosAngularList = this.afs.list('prepedido/'+ user.uid + "/")
+      this.prepedidosAngularList.snapshotChanges().subscribe(
+        list => {
+          
+
+          this.prepedidosFiltr = list.map(item => {
+            return{
+              $key: item.key,
+              ...item.payload.val()
+            }
+          })
+          console.log("nombre empresa: "+this.empresa_prepedido)
+          this.filtrPrepedidos = this.prepedidosFiltr.filter(value => value.empresa === this.empresa_prepedido)
+          this.pedidos_duplicados = Array.from(this.filtrPrepedidos.reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map()).values())
+          this.sub_TotalFinal = this.pedidos_duplicados.map(data => data.subtotal).reduce((sum, current) => sum + current, 0)
+         
+        }
+      )
 
     })
+
+    
   }
 
   // prepedidos
@@ -209,17 +231,20 @@ export class PedidosListPage implements OnInit {
           this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
           
             this.productService.deleteprepedidos(user.uid)
+            
           
          
        
         })
+       
       })
           
-
+      this.pedidoGuardado()
      
       
       
     })
+    
     }
            
     
@@ -270,9 +295,13 @@ export class PedidosListPage implements OnInit {
         
         this.modalCtrl.dismiss()
        
-       this.goToPedidos()
+       
        
             this.viewdataTienda()
+           
+            
+            
+  this.goToPedidos()
 
           }
         }]
@@ -299,10 +328,10 @@ export class PedidosListPage implements OnInit {
 
 async validationExit(){
    
-    if( this.sub_TotalFinal.length>0){
+    if( this.listadoProducto.length>0){
       console.log("entrando a validExit o finalizar pedido")
       this.guardarPedidos()
-      this.pedidoGuardado()
+      
      
     }else{
       this.salir()

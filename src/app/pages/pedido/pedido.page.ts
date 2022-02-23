@@ -11,7 +11,7 @@ import { AngularFireList, AngularFireDatabase } from '@angular/fire/compat/datab
   styleUrls: ['./pedido.page.scss'],
 })
 export class PedidoPage implements OnInit {
-
+  
   vendedores = []
   pedidos = []
   duplicados = []

@@ -10,7 +10,7 @@
 
 <ion-content>
   <div class="content">
-    <div class="main" *ngFor="let pedido of sub_TotalFinal">
+    <div class="main" *ngFor="let pedido of listadoProducto">
       <div class="div1">
         <img class="image_prod" [src]="pedido.imagen_pedido">
       </div>
@@ -42,10 +42,6 @@
       </div>
       <div class="valor">
         <h1 style="color: #3880ff; text-align: right;"><b>${{sub_TotalFinal}}</b></h1>
-      </div>
-      
-      <div class="valor">
-        <h1 style="color: #3880ff; text-align: right;"><b>{{pedidos_duplicados[0]}}</b></h1>
       </div>
     </div>
     <div class="confirmar">
