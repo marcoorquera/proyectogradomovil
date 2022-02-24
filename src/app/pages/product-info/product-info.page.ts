@@ -427,7 +427,7 @@ prepedidos
                 
             
             this.modalCtrl.dismiss()
-            location.reload();
+            //location.reload();
           }
         }
         

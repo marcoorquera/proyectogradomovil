@@ -51,6 +51,7 @@ export class PedidosListPage implements OnInit {
     this.auth.onAuthStateChanged(user => {
       this.user_id = user.uid
       this.showPrepedidos()
+      this.guardarPedidos()
       
     })
 
@@ -214,23 +215,47 @@ export class PedidosListPage implements OnInit {
   }
 
 
+datos
+  savePedidos(){
+    this.auth.onAuthStateChanged(user => {
+      for (const i in this.pprepedidos) {
+        console.log("estoy en el sabePedidos",this.pprepedidos[i])
+       
+       this.afs.database.ref('/prepedido/' + user.uid + "/" + this.pprepedidos[i]).update({
+         prepedido:0
+       })
+
+
+      }
+    })
+
+  }
   
-  
+  pprepedidos=[]
    async guardarPedidos() {
   
-  console.log("entrando a guardar el pedido")
+  
     this.auth.onAuthStateChanged(user => {
     
       
       this.productService.obtenerPrepedidos(user.uid).subscribe(data => {
         
         data.map((valores) => { 
-          
-
-          const subtotal = valores.precio_pedido * valores.cantidad_pedido;
+          if (valores.prepedido===1){
+            this.pprepedidos.push(valores.id_prepedido
+            )
+          }else{
+            const subtotal = valores.precio_pedido * valores.cantidad_pedido;
           this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
           
-            this.productService.deleteprepedidos(user.uid)
+            this.deletePrepedidos(user.uid,valores.id_prepedido)
+          }
+          
+
+          //const subtotal = valores.precio_pedido * valores.cantidad_pedido;
+          //this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
+          
+           
             
           
          
@@ -239,7 +264,7 @@ export class PedidosListPage implements OnInit {
        
       })
           
-      this.pedidoGuardado()
+      
      
       
       
@@ -326,22 +351,23 @@ export class PedidosListPage implements OnInit {
 
   }
 
-async validationExit(){
-   
-    if( this.listadoProducto.length>0){
-      console.log("entrando a validExit o finalizar pedido")
-      this.guardarPedidos()
+// async validationExit(){
+//   console.log("valid exit",this.datos)
+//     if( this.listadoProducto.length>0){
+//       console.log("imprimiendo gg",this.datos)
+
+//       this.savePedidos()
       
      
-    }else{
-      this.salir()
+//     }else{
+//       this.salir()
     
-    }
+//     }
     
     
-  }
+//   }
 
   goToPedidos(){
-    this.navCtrl.navigateForward("/menu/pedido")
+    this.navCtrl.navigateForward("/menu/home")
   }
 }

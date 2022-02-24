@@ -75,7 +75,8 @@ console.log("añadiendo a pedido final")
       precio_pedido: precio / cantidad,
       cantidad_pedido: cantidad,
       imagen_pedido: imagen,
-      subtotal: subtotal 
+      subtotal: subtotal,
+      prepedido:1
     })   
     console.log("paso 1 prodcuto añadido") 
     /*
