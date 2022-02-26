@@ -227,6 +227,7 @@ datos
 
 
       }
+      this.pedidoGuardado()
     })
 
   }

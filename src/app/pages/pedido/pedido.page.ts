@@ -113,33 +113,7 @@ export class PedidoPage implements OnInit {
 
     this.productServ.getPedidoFinal(id_user).subscribe(data => {
       data.map((item) => {
-        if (id_user === item.id_usuario) {
-          this.pedidos.push(
-            {
-              empresa: item.empresa_pedido
-            }
-          )
-          this.duplicados = Array.from(this.pedidos.reduce((map, obj) => map.set(obj.empresa, obj), new Map()).values())
-          this.duplicados.map((item) => {
-            //console.log("empresas usuario: "+item.empresa)
-            this.VendedorServ.getVendedores().subscribe(data => {
-              data.map((vendedor) => {
-                //console.log("vendedor pedido: "+item.empresa)
-                console.log("proveedor: " + vendedor.nombre_empresa)
-                if (item.empresa === vendedor.nombre_empresa) {
-                  //console.log("empresa verificada")
-                  this.vendedores.push({
-                    imagen: vendedor.image_vendedor,
-                    nombre: vendedor.nombre_empresa
-                  })
-                  this.duplicado_vendedores = Array.from(this.vendedores.reduce((map, obj) => map.set(obj.nombre_empresa, obj), new Map()).values())
-
-                }
-              })
-            })
-          })
-          console.log("duplicados: " + this.duplicados)
-        }
+        this.pedidos_duplicados=item
       })
     }
 
