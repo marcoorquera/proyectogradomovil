@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>modal-search</ion-title>
-    <ion-button (click)="salir()" fill="clear" slot="end">
+    <ion-button (click)="validationExit()" fill="clear" slot="end">
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -128,21 +128,21 @@
 
       </div>
       <div class="main" *ngFor="let producto of productos | filtroProd: textoBuscarProd">
-        <div (click)="modalPedido(producto.nombre_producto, producto.nombre_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.uid_user, producto.image_producto)" class="card_prod">
+        <div (click)="modalPedido(producto.nombre_producto, producto.nombre_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.uid_user, producto.image_producto, producto.empresa_proveedor, producto.id_prod,producto.image_empresa)" class="card_prod">
           <div class="div1">
 
           </div>
           <div class="div2">
-            <img class="img_prod" [src]="producto.image_empresa">
+            <img class="img_prod" [src]="producto.image_producto">
           </div>
           <div class="div3">
             <ion-text color="primary">
-              <h1>{{producto.empresa_proveedor}}</h1>
+              <h1>{{producto.nombre_producto}}</h1>
             </ion-text>
 
           </div>
           <div class="div4">
-            <p style="opacity:0">{{producto.nombre_producto}}</p>
+            <p >{{producto.empresa_proveedor}}</p>
           </div>
         </div>
 
@@ -150,5 +150,11 @@
 
 
     </div>
+    <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" class="pedido">
+      <button class="pedido-button">
+        pedidos
+      </button>  
+    </div>
 </div>
+
 </ion-content>

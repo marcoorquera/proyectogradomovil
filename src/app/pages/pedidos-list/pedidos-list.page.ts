@@ -18,6 +18,7 @@ export class PedidosListPage implements OnInit {
 
   @Input() empresa_prepedido;
   @Input() imagen_empresa
+  @Input() producto;
   pedidos = []
   subtotal = []
   sub = 0;
@@ -127,8 +128,8 @@ export class PedidosListPage implements OnInit {
               ...item.payload.val()
             }
           })
-          console.log("nombre empresa: "+this.empresa_prepedido)
-          this.filtrPrepedidos = this.prepedidosFiltr.filter(value => value.empresa === this.empresa_prepedido)
+          this.filtrPrepedidos = this.prepedidosFiltr
+          //.filter(value => value.empresa === this.empresa_prepedido)
           this.pedidos_duplicados = Array.from(this.filtrPrepedidos.reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map()).values())
           this.sub_TotalFinal = this.pedidos_duplicados.map(data => data.subtotal).reduce((sum, current) => sum + current, 0)
          
@@ -159,19 +160,19 @@ export class PedidosListPage implements OnInit {
     this.subtotal = [];
     this.sub_TotalFinal = 0;
     //console.log("nombre: "+nombre_selected)
-    console.log("id_prepedido: " + id)
-    console.log("cantidad: " + cantidad)
-    console.log("categoria: " + categoria)
-    console.log("id_prd: " + id_prod)
-    console.log("imagen: " + imagen)
-    console.log("nombre: " + nombre)
-
-
-    const division = precio / cantidad
-    cantidad = cantidad + 1
-    console.log("division: " + division)
-    console.log("cantidad: " + cantidad)
-    console.log("subtotal: " + division + "/" + cantidad)
+    // console.log("id_prepedido: "+id)
+    // console.log("cantidad: "+cantidad)
+    // console.log("categoria: "+categoria)
+    // console.log("id_prd: "+id_prod)
+    // console.log("imagen: "+imagen)
+    // console.log("nombre: "+nombre)
+        
+    
+    const division = precio/cantidad  
+    cantidad = cantidad + 1    
+    // console.log("division: "+division)
+    // console.log("cantidad: "+cantidad)  
+    // console.log("subtotal: "+division +"/"+ cantidad)
     const subtotal = division * cantidad
     this.pedidos = []
     this.afs.database.ref('/prepedido/' + id).update({
@@ -191,11 +192,11 @@ export class PedidosListPage implements OnInit {
 
   resta(id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio) {
     //console.log("nombre: "+nombre_selected)
-    const division = precio / cantidad
-    cantidad = cantidad - 1
-    console.log("division: " + division)
-    console.log("cantidad: " + cantidad)
-    console.log("subtotal: " + division + "/" + cantidad)
+    const division = precio/cantidad  
+    cantidad = cantidad - 1    
+    // console.log("division: "+division)
+    // console.log("cantidad: "+cantidad)  
+    // console.log("subtotal: "+division +"/"+ cantidad)
     const subtotal = division * cantidad
 
     this.afs.database.ref('/prepedido/' + id).update({
@@ -241,14 +242,12 @@ datos
       
       this.productService.obtenerPrepedidos(user.uid).subscribe(data => {
         
-        data.map((valores) => { 
+        data.map((valores) => {
           if (valores.prepedido===1){
-            this.pprepedidos.push(valores.id_prepedido
-            )
+            this.pprepedidos.push(valores.id_prepedido)
           }else{
             const subtotal = valores.precio_pedido * valores.cantidad_pedido;
-          this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
-          
+            this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
             this.deletePrepedidos(user.uid,valores.id_prepedido)
           }
           
@@ -293,7 +292,6 @@ datos
 
       }
     })
-
     
     return (await modal).present();
   }
@@ -327,7 +325,7 @@ datos
            
             
             
-  this.goToPedidos()
+  //this.goToPedidos()
 
           }
         }]
