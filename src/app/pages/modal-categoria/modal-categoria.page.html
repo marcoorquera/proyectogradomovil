@@ -13,28 +13,45 @@
     <ion-searchbar animated (ionChange)="buscarProd( $event )"
     ></ion-searchbar>
   </div>
+
+  
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let producto of productos | filtroProd: textoBuscarProd" size="6">
-        <ion-card style="margin-left: auto; margin-right: auto; height: 300px; width: 95%;">
-          <img style="width: 100%; height: 140px;" [src]="producto.image_producto">
-          <div style="height: 90px; width: 90%; margin-left: auto; margin-right: auto;">
+        <div (click)="modalPedido(producto.nombre_producto, producto.empresa_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.uid_user, producto.image_producto, producto.empresa_proveedor, producto.id_prod,producto.image_empresa)" class="card_prod">
+          <ion-card style="margin-left: auto; margin-right: auto; height: 300px; width: 95%;">
+          
+        
+          
+            <img style="width: 100%; height: 140px;" class="img_prod" [src]="producto.image_producto">
+
+            <div style="height: 90px; width: 90%; margin-left: auto; margin-right: auto;">
+          
+          <div class="div3">
             <ion-text color="primary">
-              <p style="font-size: 20px">{{producto.nombre_producto}}</p>
+              <h1>{{producto.nombre_producto}}</h1>
             </ion-text>
+
+          </div>
+          
+          {{producto.empresa_proveedor}}
+
             <ion-text color="success">
               <p style="font-size: 20px">{{producto.precio_producto}} $</p>
             </ion-text>
           </div>
-          <div style="width: 90%; margin-bottom: 10px; margin-left: auto; margin-right: auto;">
-            <ion-button  expand="full" size="small" shape="round">
-              <ion-icon slot="start" name="cart"></ion-icon>
-              Comprar
-            </ion-button>
-          </div>
-        </ion-card>
+          </ion-card>
+        </div>
       </ion-col>      
     </ion-row>
   </ion-grid>
+
+  <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" >
+    <button class="pedido-button">
+      pedidos
+    </button>  
+  </div>
+
+  
 
 </ion-content>

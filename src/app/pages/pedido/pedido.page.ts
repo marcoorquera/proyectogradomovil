@@ -37,6 +37,7 @@ export class PedidoPage implements OnInit {
     this.auth.onAuthStateChanged(user => {
       //this.pedidoFinal(user.uid)
       this.showEmpresa(user.uid)
+      this.pedidoFinal(user.uid)
     })
   }
 
@@ -107,14 +108,42 @@ export class PedidoPage implements OnInit {
 
   }
 
+dataFinal
+// pf;
 
+// pedido
+// datah=[]
   pedidoFinal(id_user) {
 
+    //  this.pf = this.afs.list('pedido_final/'+id_user+"/").snapshotChanges()
 
-    this.productServ.getPedidoFinal(id_user).subscribe(data => {
-      data.map((item) => {
-        this.pedidos_duplicados=item
-      })
+    // this.pf.subscribe(
+    //   list => {
+    //     this.pedido = list.map(item => {
+    //       return {
+    //         $key: item.key,
+    //         ...item.payload.val()
+    //       }
+    //     })
+    //     this.pedido.map(item => {
+          
+
+    //       item.id_pedido,
+    //      item.empresa_pedido,
+    //       item.fecha_pedido,
+    //      item.imagen_empresa
+      
+          
+    //     })
+        
+    //   }
+    // )
+
+
+    this.afs.list("pedido_final/"+id_user+"/").valueChanges().subscribe(data => {
+      
+        this.dataFinal=data
+  
     }
 
     )

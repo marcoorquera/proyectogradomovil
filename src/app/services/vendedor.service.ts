@@ -18,6 +18,7 @@ export class VendedorService {
     this.vendedorList = this.afs.list('/vendedor');
     return this.vendedorList.snapshotChanges()
   }
+  
 
   getVendedores(){
     this.vendedorList = this.afs.list('/vendedor');

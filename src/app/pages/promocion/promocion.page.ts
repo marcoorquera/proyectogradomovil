@@ -24,7 +24,7 @@ export class PromocionPage implements OnInit {
   buscar(event: CustomEvent){
     this.textoBuscar = event.detail.value;
   }
-
+promos=[]
   getPromocion(){
     this.promocion.getPromocion().subscribe(
       list => {
@@ -36,10 +36,15 @@ export class PromocionPage implements OnInit {
         })
 
         this.promociones.map(item => {
-          item.titulo_promo
-          item.descripcion_promo
-          item.image_promo
-          item.nombre_empresa
+          if(item.titulo_promo!=null){
+            this.promos.push( {titulo_promo:item.titulo_promo,
+              descripcion_promo:item.descripcion_promo,
+              image_promo: item.image_promo,
+              nombre_empresa:item.nombre_empresa})
+           
+
+          }
+          
         })
       }
     )

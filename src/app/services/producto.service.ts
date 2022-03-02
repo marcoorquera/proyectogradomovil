@@ -30,7 +30,7 @@ export class ProductoService {
   }
 
   getPedidoFinal(uid){
-    this.pedidoFinalList = this.afs.list('/pedido_final/'+uid+"/");
+    this.pedidoFinalList = this.afs.list('pedido_final/'+uid+"/");
     return this.pedidoFinalList.snapshotChanges().pipe(
       map(changes => 
         changes.map(c => ({
@@ -42,9 +42,16 @@ export class ProductoService {
   }
 
 
+
+  
+
+    
+    
+
   addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa){
     const pedido = this.afs.database.ref('/pedido_final/'+id_usuario+"/")
     const id_pedido_generate = pedido.push().key
+    var dta=Date.now()
 console.log("añadiendo a pedido final")
     this.afs.object('/pedido_final/'+id_usuario+"/"+id_pedido).update({
       id_pedido: id_pedido,
@@ -58,7 +65,9 @@ console.log("añadiendo a pedido final")
       id_prod: id_prod,
       subtotal: subtotal,
       imagen_empresa: imagen_empresa,
-      fecha_pedido: Date.now()
+      fecha_pedido: ("0" + new Date(dta).getDate()).slice(-2) + '/' + (("0" + (new Date(dta).getMonth() + 1)).slice(-2)
+      ) + '/' + new Date(dta).getFullYear()
+    
     })
   }
   addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number){

@@ -32,6 +32,8 @@ export class MenuPage implements OnInit {
     this.afAuth.onAuthStateChanged(user=> {
       if(user){
         this.showMenu(user.uid);
+      }else{
+        this.navCtrl.navigateBack('/login');
       }
     })
   }

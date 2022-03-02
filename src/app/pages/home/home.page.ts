@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 
-import { MenuController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 import { ProductoService } from 'src/app/services/producto.service';
 
 import { ModalController } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { ProductInfoPage } from '../product-info/product-info.page';
 import { VendedorService } from 'src/app/services/vendedor.service';
 import { ModalCategoriaPage } from '../modal-categoria/modal-categoria.page';
 import { ModalSearchPage } from '../modal-search/modal-search.page';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-home',
@@ -28,23 +29,46 @@ export class HomePage implements OnInit {
   constructor(
     private menu:  MenuController,
     private prodService: ProductoService,
-    private modalCtrl: ModalController,
-    private afs: AngularFireDatabase,
-    private vendedorService: VendedorService
+    private modalCtrl: ModalController,private navCtrl: NavController,
+    private afs: AngularFireDatabase, private navCtr: NavController,
+    private vendedorService: VendedorService,  private auth: AngularFireAuth
   ) { }
 
   ngOnInit() {
     //this.getProducto()
-    this.getEmpresa()
+   
+    this.auth.onAuthStateChanged(user => { 
+    
+      if(user){
+        this.getEmpresa()
+        this.getCategoria()
+
+      }else{
+
+        this.navCtrl.navigateBack('/login');
+        }
+    
+    })
+        
     
   }
-  
+  resCategorias
+  getCategoria(){
+    this.afs.list("categoria/").valueChanges().subscribe(data=>{
+      this.resCategorias=data
+    })
+
+  }
+
+  private zone: NgZone
   buscar(event: CustomEvent){    
     this.textoBuscar = event.detail.value;
     //console.log("busqueda: "+this.textoBuscar)
   }
   getEmpresa(){
-    
+
+    this.auth.onAuthStateChanged(user => { 
+      if(user!=null){
     this.vendedorService.getVendedor().subscribe(
       list => {
         this.vendedores = list.map(item => {
@@ -63,6 +87,10 @@ export class HomePage implements OnInit {
         })
       }
     )
+
+    }
+
+    })
   }
 
   /*

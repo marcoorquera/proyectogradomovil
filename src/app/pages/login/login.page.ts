@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
       console.log(res);
       this.errorMessage = "";
       this.navCtrl.navigateForward("/menu/home");
+      this.validations_form.reset()
     }, err => {
       this.errorMessage = this.errMessage[err.code]
       console.log(err.code)
