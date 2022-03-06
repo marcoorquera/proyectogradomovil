@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase, AngularFireObject, snapshotChanges } from '@angular/fire/compat/database';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { MenuController } from '@ionic/angular';
 
 
 import { Plugins } from '@capacitor/core';
 import { CameraOptions, CameraResultType } from '@capacitor/camera';
+import { getAuth, updatePassword } from "firebase/auth";
 
 const { Camera } = Plugins
 
@@ -48,14 +49,16 @@ export class ProfilePage implements OnInit {
     private afAuth: AngularFireAuth,
     private navCtrl: NavController,
     private storage: AngularFireStorage,
-    private menu:  MenuController 
+    private menu:  MenuController ,public alertController: AlertController
   ) { }
 
   ngOnInit() {
     this.afAuth.onAuthStateChanged(user => {
       if(user){
         this.showProfile(user.uid)
-      }      
+      }   else{
+        this.navCtrl.navigateBack('/login');
+      }  
     })
   }
 
@@ -133,5 +136,72 @@ export class ProfilePage implements OnInit {
     this.menu.toggle()
   }
 
+  
+  async succesPassword(message){
+    const alert = await this.alertController.create({
+      animated: true,
+      cssClass: 'exit',
+      header: "Cambio contraseña",
+      message: message,
+     
+      buttons: ['OK']
+
+    })
+    await alert.present();
+  }
+
+ 
+  async changePassword() {
+    let alert = this.alertController.create({
+      header: 'Cambiar contraseña',
+      inputs: [
+        
+        {
+          name: 'password',
+          placeholder: 'New Password',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: data => {
+            if ((data.username, data.password)) {
+              const auth = getAuth();
+              const user = auth.currentUser;
+              const newPassword = data.password;
+  
+              updatePassword(user, newPassword).then(() => {
+                // Update successful.
+                console.log("contraseña actualizada")
+                var m="Se a actualizado la contraseña correctamente"
+                this.succesPassword(m)
+                this.afAuth.signOut()
+                this.navCtrl.navigateBack('/login');
+
+              }).catch((error) => {
+                
+                console.log(error)
+                var m="No se pudo actualizar la contraseña inicie la sesion nuevamente e intentelo de nuevo"
+                this.succesPassword(m)
+                this.afAuth.signOut()
+              });
+            } else {
+              // invalid login
+              return false;
+            }
+          }
+        }
+      ]
+    });
+   await (await alert).present()
+  }
   
 }
