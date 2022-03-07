@@ -46,15 +46,13 @@ export class ProductoService {
   
 
     
-    
-
-  addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa){
+  addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido){
     const pedido = this.afs.database.ref('/pedido_final/'+id_usuario+"/")
     const id_pedido_generate = pedido.push().key
     var dta=Date.now()
 console.log("añadiendo a pedido final")
     this.afs.object('/pedido_final/'+id_usuario+"/"+id_pedido).update({
-      id_pedido: id_pedido,
+      id_pedido: id_prepedido,
       id_usuario: id_usuario,
       nombre_pedido: nombre,
       precio_pedido: precio,

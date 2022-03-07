@@ -32,9 +32,11 @@ export class HistorialpedidosPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('id_pedido',this.id_pedido.id)
     this.showEmpresa()
     this.subTotalFinal()
     this.showPedidoFinal()
+    
 
   }
 
@@ -79,13 +81,13 @@ export class HistorialpedidosPage implements OnInit {
       }
     )
   }
-
-  showPedidoFinal()
+fecha
+  async showPedidoFinal()
   {
     this.auth.onAuthStateChanged(user => {
       this.prodServ.getPedidoFinal(user.uid).subscribe(data => {
         data.map((item) => {
-  
+          console.log("pedido: "+this.id_pedido, item.id_pedido)
           if(item.id_pedido === this.id_pedido){
             
             this.pedidos.push({
@@ -97,12 +99,18 @@ export class HistorialpedidosPage implements OnInit {
               imagen_pedido: item.imagen_pedido,
               nombre_pedido: item.nombre_pedido,
               precio_pedido: item.precio_pedido,
+              fecha:item.fecha_pedido,
               email: this.email,
               telefono: this.telefono
             })
+            
+            this.fecha=item.fecha_pedido
+            //console.log("length: "+this.fecha)
           }
-          console.log("email: "+this.telefono)
+         
         })
+        console.log("length: "+this.fecha)
+        document.getElementById('fecha').innerHTML+=' '+this.fecha
       })
 
      })

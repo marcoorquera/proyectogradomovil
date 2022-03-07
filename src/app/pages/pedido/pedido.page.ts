@@ -113,7 +113,12 @@ dataFinal
 
 // pedido
 // datah=[]
-  pedidoFinal(id_user) {
+id_pedidos=[]
+num_pedidos=[]
+tiendas=[]
+filtro_tiendas=[]
+tamanio_pedidos
+  async pedidoFinal(id_user) {
 
     //  this.pf = this.afs.list('pedido_final/'+id_user+"/").snapshotChanges()
 
@@ -143,19 +148,39 @@ dataFinal
     this.afs.list("pedido_final/"+id_user+"/").valueChanges().subscribe(data => {
       
         this.dataFinal=data
-  
+        this.dataFinal=this.dataFinal.map(item => {
+          this.id_pedidos.push(item.id_pedido)
+          this.tiendas.push(item.empresa_pedido)
+        })
+        let result = this.id_pedidos.filter((item,index)=>{
+          // console.log(item.empresa,index,'/////////')
+          return this.id_pedidos.indexOf(item) === index;
+        })
+        let num_tiendas = this.tiendas.filter((item,index)=>{
+          // console.log(item.empresa,index,'/////////')
+          return this.tiendas.indexOf(item) === index;
+        })
+        console.log(num_tiendas,'/////////')
+        
+        this.id_pedidos=[]
+        for (const i in result) {
+          this.num_pedidos.push({id: result[i]})
+        }
+        this.num_pedidos.reverse()
+        console.log(this.num_pedidos,'/////////')
+        this.tamanio_pedidos=this.num_pedidos.length+1
+
     }
 
     )
   }
 
 
-  async getListpedidos(pedido, nombre) {
+  async getListpedidos(pedido) {
     const modal = await this.modalCtrl.create({
       component: HistorialpedidosPage,
       componentProps: {
-        id_pedido: pedido,
-        nombre_empresa: nombre
+        id_pedido: pedido
       }
     })
     await modal.present()

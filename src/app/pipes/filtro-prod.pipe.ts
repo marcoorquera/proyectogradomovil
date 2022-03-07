@@ -8,12 +8,11 @@ export class FiltroProdPipe implements PipeTransform {
   transform(arreglo: any[], textoBuscarProd: string): any{
   
     if(textoBuscarProd === ''){
-      console.log("arreglo:"+arreglo)
       return arreglo;
     
     }
     return arreglo.filter(arreglo =>    
-      arreglo.nombre_producto.toLowerCase().includes(textoBuscarProd.toLocaleLowerCase()) ||  arreglo.categoria_producto.toLowerCase().includes(textoBuscarProd.toLocaleLowerCase())      
+      arreglo.nombre_producto && arreglo.nombre_producto.toLowerCase().includes(textoBuscarProd.toLocaleLowerCase())
     )
   }
 

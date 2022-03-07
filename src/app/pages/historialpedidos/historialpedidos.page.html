@@ -8,7 +8,11 @@
 </ion-header>
 
 <ion-content>
-  <div style= "height: 300px;">
+  
+  <div style= "height: 300px;">  
+    <div >
+      <p id="fecha">FECHA</p>
+    </div> 
     <ion-grid style="margin-left: auto; margin-right: auto;" class="pedidos" *ngFor="let pedido of pedidos; let i=index">
       <ion-row style="border-bottom: 1px solid #4970F0; ">
         <ion-col size="1">
@@ -23,12 +27,12 @@
         <ion-col size="2">
           <p>${{pedido.precio_pedido}}</p>
         </ion-col>
-        <ion-col size="3">
+        <!-- <ion-col size="3">
           <p>{{pedido.telefono}}</p>
         </ion-col>
         <ion-col size="3">
           <p>{{pedido.email}}</p>
-        </ion-col>
+        </ion-col> -->
       </ion-row>
     </ion-grid>
   

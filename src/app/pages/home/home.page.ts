@@ -37,9 +37,7 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     //this.getProducto()
-   
     this.auth.onAuthStateChanged(user => { 
-    
       if(user){
         this.getEmpresa()
         this.getCategoria()
@@ -78,6 +76,8 @@ export class HomePage implements OnInit {
             ...item.payload.val()
           }
         })
+         
+        this.vendedores=this.vendedores.filter(value => value.estado == true)
         this.vendedores.map(item => {
           item.nombre_empresa
           item.image_vendedor

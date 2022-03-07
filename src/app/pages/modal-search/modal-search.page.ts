@@ -66,25 +66,26 @@ export class ModalSearchPage implements OnInit {
   ngOnInit() {
     this.showEmpresas();
     this.showProductos();
-    this.showProductCategory();
+    //this.showProductCategory();
     this.prepedidosExist();
   }
 
-  async CategorySelected(image, categoria, empresa){
-    const modal = await this.modalCtrl.create({
-      component: ProductInfoPage,
-      componentProps: {
-        nombre_categoria: categoria,
-        img_empresa: image,
-        nom_empresa: empresa
-      }
-    })
-    return await modal.present()
-  }
+  // async CategorySelected(image, categoria, empresa){
+  //   const modal = await this.modalCtrl.create({
+  //     component: ProductInfoPage,
+  //     componentProps: {
+  //       nombre_categoria: categoria,
+  //       img_empresa: image,
+  //       nom_empresa: empresa
+  //     }
+  //   })
+  //   return await modal.present()
+  // }
 
   buscarProducto(event){
-    this.resultadosHidden = false;
+    //this.resultadosHidden = false;
     this.textoBuscarProd = event.detail.value;
+    console.log("busqueda: "+this.textoBuscarProd)
 
   }
 
@@ -109,6 +110,7 @@ export class ModalSearchPage implements OnInit {
             ...item.payload.val()
           }
         })
+        this.proveedores=this.proveedores.filter(value => value.estado == true)
         this.proveedores.map(item => {
           item.nombre_empresa,
           item.image_vendedor,
@@ -189,47 +191,47 @@ export class ModalSearchPage implements OnInit {
       
   }
 
-  showProductCategory(){
-    this.CategoriasEnable = false;
-    this.empresasEnable = true;
-    this.productosEnable = true; 
-    this.prodCategoryList = this.afs.list('categoria_productos/');
-    this.prodCategoryList.snapshotChanges().subscribe(
-      list => {
-        this.categoriaprod = list.map(item => {
-          return {
-            $key: item.key,
-            ...item.payload.val()
-          }
-        })
-        //console.log("categoria_prod: "+this.categoriaprod[0])
-        this.categoriaprod.map(item => {
-          item.categoria,
-          item.empresa,
-          item.image_empresa
-          item.codigo_categoria          
-        }
-        )
-        console.log("categoria_prod: "+this.categoriaprod)
-        this.duplicados = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
-        this.categoria_buscar = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
-        if(this.categoria_buscar){
+  // showProductCategory(){
+  //   this.CategoriasEnable = false;
+  //   this.empresasEnable = true;
+  //   this.productosEnable = true; 
+  //   this.prodCategoryList = this.afs.list('categoria_productos/');
+  //   this.prodCategoryList.snapshotChanges().subscribe(
+  //     list => {
+  //       this.categoriaprod = list.map(item => {
+  //         return {
+  //           $key: item.key,
+  //           ...item.payload.val()
+  //         }
+  //       })
+  //       //console.log("categoria_prod: "+this.categoriaprod[0])
+  //       this.categoriaprod.map(item => {
+  //         item.categoria,
+  //         item.empresa,
+  //         item.image_empresa
+  //         item.codigo_categoria          
+  //       }
+  //       )
+  //       console.log("categoria_prod: "+this.categoriaprod)
+  //       this.duplicados = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
+  //       this.categoria_buscar = Array.from(this.categoriaprod.reduce((map, obj) => map.set(obj.codigo_categoria, obj), new Map()).values())
+  //       if(this.categoria_buscar){
 
-        }
+  //       }
         
-        this.categoria_buscar.map(item => {
-          console.log("categoria_prod: "+ item.codigo_categoria)
-        })
+  //       this.categoria_buscar.map(item => {
+  //         console.log("categoria_prod: "+ item.codigo_categoria)
+  //       })
       
-        /*
-        this.duplicados =  this.categoriaprod.filter(arreglo => arreglo.categoria === 'veladores')
-        this.duplicados.filter(duplicado => {
-          console.log("duplicad: "+duplicado.categoria+" empresa: "+duplicado.empresa)
-        })
-        */
-      }
-    )
-  }
+  //       /*
+  //       this.duplicados =  this.categoriaprod.filter(arreglo => arreglo.categoria === 'veladores')
+  //       this.duplicados.filter(duplicado => {
+  //         console.log("duplicad: "+duplicado.categoria+" empresa: "+duplicado.empresa)
+  //       })
+  //       */
+  //     }
+  //   )
+  // }
   
   
 
@@ -246,6 +248,7 @@ export class ModalSearchPage implements OnInit {
             ...item.payload.val()
           }
         })
+       // this.productos=this.productos.filter(value => value.estado == 1)
         this.productos.map(item => {
           item.nombre_producto,
           item.empresa_proveedor,
@@ -257,8 +260,30 @@ export class ModalSearchPage implements OnInit {
           item.uid_user,
           item.image_producto,
           item.image_empresa
+        
+          //console.log('entro', item.empresa_proveedor, this.proveedores.filter(value => value.uid_vendedor == item.uid_user))
+        //   this.proveedores.filter(value => value.uid_vendedor == item.uid_user).map(item => {
+        //     console.log('proveedor', item.nombre_empresa)
+        //   })
           
+        console.log('enroo',this.productos)
         })
+        
+        // this.proveedores.map(item => {
+        //   // this.productos=Array.from(this.productos.filter(value =>item.uid_vendedor== value.uid_user).map(a => {
+        //   //   console.log('producto', a.empresa_proveedor)
+        //   // }))
+        //   // console.log('item.uid_vendedor',item.uid_vendedor)
+        //   this.productos=this.productos.filter(value =>item.uid_vendedor== value.uid_user).map(a => {
+
+        //     console.log('producto', a.empresa_proveedor,item.uid_vendedor)
+        //   })
+        //   //console.log('enroo',item.uid_vendedor)
+        //   //console.log('entro', item.empresa_proveedor, this.proveedores.filter(value => value.uid_vendedor == item.uid_user))
+        // })
+        
+        //this.productos=
+        
       }
     )
     

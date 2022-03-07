@@ -10,20 +10,28 @@
 
 <ion-content >
 
-  <div *ngFor="let vendedor of dataFinal">
+  <div *ngFor="let vendedor of num_pedidos; let i =index">
     <div  > 
-    <div (click)="getListpedidos(vendedor.id_pedido, vendedor.empresa_pedido)" class="empresa" >
+    <div (click)="getListpedidos(vendedor.id)" class="empresa" >
       
-      <div  class="imagen">
+      <!-- <div  class="imagen">
         <div>
         <img [src]="vendedor.imagen_empresa">
+      </div> -->
+      <div  class="imagen">
+        <div>
+        <img src="https://www.fiverr.com/support/article_attachments/360020049978">
       </div>
     
-      <p>{{vendedor.fecha_pedido}}</p></div>
-      <div class="nombre">
+      <!-- <p>{{vendedor.fecha_pedido}}</p> -->
+    </div>
+      <!-- <div class="nombre">
         <p>{{vendedor.empresa_pedido}} </p>
+      </div>     -->
+      <div class="nombre">
+        <p>Pedido {{tamanio_pedidos-(i+1) }} </p>
+
       </div>    
-      
       <br>
     </div>  
   </div>

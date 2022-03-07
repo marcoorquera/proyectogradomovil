@@ -18,11 +18,11 @@
             empresas
           </ion-button>
         </ion-col>
-        <ion-col>
+        <!-- <ion-col>
           <ion-button shape="round" (click)="showProductCategory()">
             categorias
           </ion-button>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <ion-button shape="round" (click)="showProductos()">
             Producto
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <div [hidden]="CategoriasEnable" class="empresas">
+    <!-- <div [hidden]="CategoriasEnable" class="empresas">
 
       <div>
         <ion-searchbar color="medium" animated (ionChange)="buscarCategory( $event )"></ion-searchbar>
@@ -71,7 +71,7 @@
 
       </div>
 
-      <!--(click)="detailCategoria(duplicado.image_empresa, duplicado.categoria, duplicado.empresa)"-->
+      (click)="detailCategoria(duplicado.image_empresa, duplicado.categoria, duplicado.empresa)"
       <div class="main" *ngFor="let duplicado of duplicados | filtroCategory: textoBuscarCat: 'codigo_categoria'">
         <div (click)="CategorySelected(duplicado.image_empresa, duplicado.categoria, duplicado.empresa)" class="card_prod">
           <div class="div1">
@@ -91,7 +91,7 @@
           </div>
         </div>
 
-      </div>
+      </div> -->
       
 
       <!--
@@ -116,8 +116,8 @@
 
       </div>
       -->
-
-    </div>
+<!-- 
+    </div> -->
     <div [hidden]="productosEnable" class="empresas">
 
       <div>
