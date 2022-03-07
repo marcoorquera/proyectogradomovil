@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { VendedorService } from 'src/app/services/vendedor.service';
 import { ProductoService } from 'src/app/services/producto.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { async } from 'rxjs';
 
 @Component({
   selector: 'app-historialpedidos',
@@ -33,7 +34,7 @@ export class HistorialpedidosPage implements OnInit {
 
   ngOnInit() {
     console.log('id_pedido',this.id_pedido.id)
-    this.showEmpresa()
+    //this.showEmpresa()
     this.subTotalFinal()
     this.showPedidoFinal()
     
@@ -85,32 +86,62 @@ fecha
   async showPedidoFinal()
   {
     this.auth.onAuthStateChanged(user => {
+
+
+
+
       this.prodServ.getPedidoFinal(user.uid).subscribe(data => {
         data.map((item) => {
           console.log("pedido: "+this.id_pedido, item.id_pedido)
           if(item.id_pedido === this.id_pedido){
+
+          this.vendedorServ.getVendedor().subscribe(
+            list => {
+            this.vendedores = list.map(item => {
+                return {
+                  $key: item.key,
+                  ...item.payload.val()
+                }
+              })
+               
+            this.vendedores= this.vendedores.filter(value => value.nombre_empresa == item.empresa_pedido)
+    
+               this.vendedores.map(it=>{
+                this.email=it.email_vendedor
+                this.telefono=it.telefono_vendedor
+                
+    
+              })
+
+              console.log("valor de lso vendedrores: "+this.email,this.telefono)
+
+              
             
-            this.pedidos.push({
-              cantidad_pedido: item.cantidad_pedido,
-              categoria_pedido: item.categoria_pedido,
-              empresa_pedido: item.empresa_pedido,
-              id_pedido: item.id_pedido,
-              id_prod: item.id_prod,
-              imagen_pedido: item.imagen_pedido,
-              nombre_pedido: item.nombre_pedido,
-              precio_pedido: item.precio_pedido,
-              fecha:item.fecha_pedido,
-              email: this.email,
-              telefono: this.telefono
+                this.pedidos.push({
+                  cantidad_pedido: item.cantidad_pedido,
+                  categoria_pedido: item.categoria_pedido,
+                  empresa_pedido: item.empresa_pedido,
+                  id_pedido: item.id_pedido,
+                  id_prod: item.id_prod,
+                  imagen_pedido: item.imagen_pedido,
+                  nombre_pedido: item.nombre_pedido,
+                  precio_pedido: item.precio_pedido,
+                  fecha:item.fecha_pedido,
+                  email: this.email,
+                  telefono: this.telefono
+                })
+                
+                // this.fecha=item.fecha_pedido
+                //console.log("length: "+this.fecha)
+              
             })
-            
-            this.fecha=item.fecha_pedido
-            //console.log("length: "+this.fecha)
+
           }
+      
+       
          
         })
-        console.log("length: "+this.fecha)
-        document.getElementById('fecha').innerHTML+=' '+this.fecha
+        
       })
 
      })

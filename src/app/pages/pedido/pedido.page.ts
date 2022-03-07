@@ -36,6 +36,8 @@ export class PedidoPage implements OnInit {
   ngOnInit() {
     this.auth.onAuthStateChanged(user => {
       //this.pedidoFinal(user.uid)
+      this.tamanio_pedidos=0
+     
       this.showEmpresa(user.uid)
       this.pedidoFinal(user.uid)
     })
@@ -119,7 +121,9 @@ tiendas=[]
 filtro_tiendas=[]
 tamanio_pedidos
   async pedidoFinal(id_user) {
+    
 
+  
     //  this.pf = this.afs.list('pedido_final/'+id_user+"/").snapshotChanges()
 
     // this.pf.subscribe(
@@ -161,14 +165,19 @@ tamanio_pedidos
           return this.tiendas.indexOf(item) === index;
         })
         console.log(num_tiendas,'/////////')
-        
+        this.num_pedidos=[]
         this.id_pedidos=[]
         for (const i in result) {
           this.num_pedidos.push({id: result[i]})
         }
+
+        console.log("tamanio 3 ",result.length)
+       
+        console.log("tamanio 2 ",this.num_pedidos.length)
         this.num_pedidos.reverse()
         console.log(this.num_pedidos,'/////////')
         this.tamanio_pedidos=this.num_pedidos.length+1
+        console.log("tamanio " , this.tamanio_pedidos)
 
     }
 
