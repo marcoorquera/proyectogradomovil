@@ -79,16 +79,18 @@
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>
-  <br>
-  <br>
-  
-  <ion-button (click)="goToLogin()" expand="block" fill="solid" size="default" color="primary" style="font-family: 'Nunito Sans', sans-serif;">
-  
-    Regresar
-  </ion-button>
-  <!--
-      <a style="text-align: center;" (click)="goToLogin()" >Iniciar sesión</a>
 
-  -->
+  <ion-row>
+    <ion-col >
+     
+          <div class="ion-text-center ion-margin-top">
+
+        <a  (click)="goToLogin()"><small>Iniciar sesión</small></a>
+      </div>
+        
+      </ion-col>
+     
+  </ion-row>
+  
 </ion-content>
 

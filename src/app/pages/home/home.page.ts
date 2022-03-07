@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
 
   textoBuscar = '';
   constructor(
+    private afAuth: AngularFireAuth,
     private menu:  MenuController,
     private prodService: ProductoService,
     private modalCtrl: ModalController,private navCtrl: NavController,
@@ -44,8 +45,8 @@ export class HomePage implements OnInit {
         this.getCategoria()
 
       }else{
-
-        this.navCtrl.navigateBack('/login');
+      
+        this.navCtrl.navigateBack('/login')
         }
     
     })

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -26,10 +27,10 @@ export class LoginPage implements OnInit {
   passType = 'password'
 
 
-  constructor(
+  constructor(private afs: AngularFireDatabase,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private navCtrl: NavController
+    private navCtrl: NavController,private alertCtroller: AlertController,
   ) { }
 
   ngOnInit() {
@@ -55,15 +56,33 @@ export class LoginPage implements OnInit {
       { type: 'minlength', message: 'La contraseña debe ser mayor a 5 caracteres' }
     ]
   };
+  usuario
 
   loginUser(value){
     this.authService.loginUser(value)
     .then(res => {
-      console.log(res);
-      this.errorMessage = "";
-      this.navCtrl.navigateForward("/menu/home");
-      this.validations_form.reset()
+
+      this.afs.object('usuario/'+res.user.uid).valueChanges().subscribe(_data => {
+        this.usuario = _data
+        if (this.usuario!=null){
+          if (res.user.uid == this.usuario.uid  ){
+            this.navCtrl.navigateForward("/menu/home");
+            this.validations_form.reset()
+          }else{
+            this.navCtrl.navigateForward('/register');
+          }
+
+        }else{
+          this.navCtrl.navigateForward('/register');
+          let h='Información'
+          let m='No se ha encontrado el usuario por favor registrese'
+          this.userAccess(h,m)
+        }
+      
+      })
+    
     }, err => {
+      
       this.errorMessage = this.errMessage[err.code]
       console.log(err.code)
     })
@@ -82,5 +101,17 @@ export class LoginPage implements OnInit {
   hidePassword(){ 
     this.isDisabledPass = true;
     this.passType = 'password'
+  }
+
+  async userAccess(header:string,message:string){
+    const alert = await this.alertCtroller.create({
+      animated: true,
+      cssClass: 'exit',
+      header: header,
+      message: message,
+      buttons: ['OK']
+
+    })
+    await alert.present();
   }
 }

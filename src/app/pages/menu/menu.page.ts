@@ -62,15 +62,19 @@ export class MenuPage implements OnInit {
   goToPedidos(){
     this.navCtrl.navigateForward("/menu/pedido")
   }
-
   logout(){
-    this.authservice.logoutUser().then(res => {
-      console.log(res);
-      this.navCtrl.navigateBack('/login');
-    }).catch(error => {
-      console.log(error);
-    })
+    this.afAuth.signOut()
+    this.navCtrl.navigateBack('/login')
   }
+
+  // logout(){
+  //   this.authservice.logoutUser().then(res => {
+  //     console.log(res);
+  //     this.navCtrl.navigateBack('/login');
+  //   }).catch(error => {
+  //     console.log(error);
+  //   })
+  // }
   closeMenu(){
     this.menu.toggle();
   }
