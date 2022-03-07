@@ -58,6 +58,10 @@ export class AuthService {
               imagen: image,
 
             })
+
+            this.afs.object('emails/'+uid).set({
+              email:email
+            })
           })
         })
         this.navCtrl.navigateForward('/login')
