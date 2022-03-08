@@ -16,6 +16,7 @@ export class HistorialpedidosPage implements OnInit {
   nombre_empresa
   pedidos = []
   vendedores = []
+  productos = []
   vendedoreSelected = []
   subtotalArray = []
 
@@ -24,6 +25,7 @@ export class HistorialpedidosPage implements OnInit {
   direccion: string;
   telefono: string;
   email: string;
+  precioUni: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -92,8 +94,15 @@ fecha
 
       this.prodServ.getPedidoFinal(user.uid).subscribe(data => {
         data.map((item) => {
-          console.log("pedido: "+this.id_pedido, item.id_pedido)
           if(item.id_pedido === this.id_pedido){
+            this.prodServ.getProduct().subscribe(prod => {
+                this.productos = prod.map(ite => {
+                    if(ite.id_prod == item.id_prod){
+                      this.precioUni=ite.precio_producto
+                    }
+                  })
+             
+            })
 
           this.vendedorServ.getVendedor().subscribe(
             list => {
@@ -128,7 +137,8 @@ fecha
                   precio_pedido: item.precio_pedido,
                   fecha:item.fecha_pedido,
                   email: this.email,
-                  telefono: this.telefono
+                  telefono: this.telefono,
+                  precio_uni: this.precioUni
                 })
                 
                 // this.fecha=item.fecha_pedido

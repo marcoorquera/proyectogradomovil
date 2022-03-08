@@ -9,18 +9,35 @@
 
 <ion-content>
   
-  <div style= "height: 300px;">  
-    <div >
-      <p id="fecha">FECHA</p>
-    </div> 
+  <div style= "height: 300px;">   
     <ion-grid style="margin-left: auto; margin-right: auto;" class="pedidos" *ngFor="let pedido of pedidos; let i=index">
+      <ion-card>
+        <ion-card-title style="text-align: center; margin: 10px;">{{pedido.empresa_pedido}} </ion-card-title>
+        <img  [src]="pedido.imagen_pedido" style="display: block;margin:auto;width: 132px;"/>
+        <ion-card-header>
+          <ion-card-title>{{pedido.nombre_pedido}} </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
 
+          <h4>Telefono: {{pedido.telefono}}</h4> 
+
+          <h4>Email: {{pedido.email}}</h4> 
+
+          <h4>precio unitario: ${{pedido.precio_uni}}</h4>
+          
+          <h4>Cantidad: {{pedido.cantidad_pedido}}</h4>
+
+          <h4>Precio final: ${{pedido.precio_pedido}}</h4>
+
+        </ion-card-content>
+      </ion-card>
+      <!-- <div >
+        <p id="fecha">{{pedido.fecha}}</p>
+      </div> 
       <div class="div2">
         <img style=" margin: auto; width: 100px; height: 100px; " class="img_prod" [src]="pedido.imagen_pedido">
       </div>
-      <div >
-        <p id="fecha">{{pedido.fecha}}</p>
-      </div> 
+     
       <ion-row style="border-bottom: 1px solid #4970F0; ">
         <ion-col size="1">
           <p>{{i+1}}</p>
@@ -40,7 +57,7 @@
         <ion-col size="3">
           <p>{{pedido.email}}</p>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
     </ion-grid>
   
   </div>
