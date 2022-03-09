@@ -83,7 +83,7 @@ export class ModalPedidoPage implements OnInit {
 
     this.auth.onAuthStateChanged(user => {
       console.log(user.uid, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal)
-      this.prodServ.addeditPedidos(user.uid, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal)
+      this.prodServ.addeditPedidos(user.uid, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal,this.precio)
           
     
       

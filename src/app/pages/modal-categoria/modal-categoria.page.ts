@@ -35,15 +35,12 @@ export class ModalCategoriaPage implements OnInit {
     console.log("busqueda: "+this.textoBuscarProd)
   }
 
-  getProd(){
+  async getProd(){
     this.prodServ.getProduct().subscribe(data => {
       data.map((item) => {
-        console.log("item_categoria: "+item.categoria_producto)
-        console.log("categ: "+this.categoria)
         
       if(item.categoria_producto === this.categoria){
 
-       
         this.productos.push({
           nombre_producto: item.nombre_producto,
           descripcion_producto: item.descripcion_producto,
@@ -53,7 +50,7 @@ export class ModalCategoriaPage implements OnInit {
           precio_producto: item.precio_producto,
           image_producto: item.image_producto,
           image_empresa:item.image_empresa,
-
+          estado:item.estado,
           id_prod:item.id_prod,
           uid_user:item.uid_user
 
@@ -61,15 +58,14 @@ export class ModalCategoriaPage implements OnInit {
           
 
         })
+        
+        this.productos=this.productos.filter(value => value.estado == 1)
       }
      
       })
     })
   }
 
-  salir(){
-    this.modalCtrl.dismiss();
-  }
 
   @Input() nombre;
   @Input() proveedor;
@@ -126,6 +122,61 @@ export class ModalCategoriaPage implements OnInit {
     
       
   }
+  async validationExit(){
+    console.log("verificando si exite prepedidos",this.prepedidos.length)
+    if(this.prepedidos.length){
+      this.salir()
+    }else{
+      this.modalCtrl.dismiss() 
+    }
+    
+    
+  }
+  
+
+  async salir(){
+    const alert = await this.alertController.create({
+      animated: true,
+      cssClass: 'alert',
+      header: '¿Seguro que desea salir?',
+      message: 'Al salir su pedido se eliminará',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Ok',
+          role: 'ok',
+          handler: () => {
+
+            this.auth.onAuthStateChanged(user => { 
+            
+         
+                  console.log("estoy en el if del ok para eliminar")
+                  
+                  this.prodServ.deleteprepedidos(user.uid)})
+
+                  
+                  
+                
+            
+            this.modalCtrl.dismiss()
+            //location.reload();
+          }
+        }
+        
+        
+      ]
+
+    })
+    
+    await alert.present();
+    //this.modalCtrl.dismiss();
+    
+  }
+ 
+
   producto: boolean = true;
   async goToPedidoList(){
     //console.log("empresa1: "+this.nom_empresa)

@@ -102,7 +102,7 @@ export class PedidosListPage implements OnInit {
     })
   }
   listadoProducto
-  showPrepedidos() {
+  async showPrepedidos() {
     this.auth.onAuthStateChanged(user => {
      
       this.afs.list('prepedido/' + user.uid + "/").valueChanges().subscribe(data => {
@@ -155,10 +155,12 @@ export class PedidosListPage implements OnInit {
 
   // }
 
-  suma(id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio) {
+  suma(id_usuario,id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio,precio_unit) {
     this.sub = 0;
     this.subtotal = [];
     this.sub_TotalFinal = 0;
+    console.log("cantidad antes antes: "+cantidad)
+    
     //console.log("nombre: "+nombre_selected)
     // console.log("id_prepedido: "+id)
     // console.log("cantidad: "+cantidad)
@@ -167,15 +169,15 @@ export class PedidosListPage implements OnInit {
     // console.log("imagen: "+imagen)
     // console.log("nombre: "+nombre)
         
-    
-    const division = precio/cantidad  
-    cantidad = cantidad + 1    
-    // console.log("division: "+division)
-    // console.log("cantidad: "+cantidad)  
+    console.log("cantidad antes: "+cantidad)
+    cantidad = cantidad + 1   
+    const division = precio_unit*cantidad  
+    console.log("division: "+division)
+    console.log("cantidad: "+cantidad)  
     // console.log("subtotal: "+division +"/"+ cantidad)
-    const subtotal = division * cantidad
+    const subtotal = division 
     this.pedidos = []
-    this.afs.database.ref('/prepedido/' + id).update({
+    this.afs.database.ref('/prepedido/' + id_usuario+'/'+id ).update({
       cantidad_pedido: cantidad,
       categoria_pedido: categoria,
       empresa: empresa,
@@ -184,22 +186,22 @@ export class PedidosListPage implements OnInit {
       imagen_pedido: imagen,
       nombre_pedido: nombre,
       precio_pedido: division,
-      subtotal: subtotal
+      subtotal: division
     })
 
 
   }
 
-  resta(id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio) {
+  resta(id_usuario,id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio,precio_unit) {
     //console.log("nombre: "+nombre_selected)
-    const division = precio/cantidad  
+    //const division = precio/cantidad  
     cantidad = cantidad - 1    
     // console.log("division: "+division)
     // console.log("cantidad: "+cantidad)  
     // console.log("subtotal: "+division +"/"+ cantidad)
-    const subtotal = division * cantidad
+    const subtotal = precio_unit * cantidad
 
-    this.afs.database.ref('/prepedido/' + id).update({
+    this.afs.database.ref('/prepedido/' + id_usuario+'/'+id ).update({
       cantidad_pedido: cantidad,
       categoria_pedido: categoria,
       empresa: empresa,
@@ -207,7 +209,7 @@ export class PedidosListPage implements OnInit {
       id_prod: id_prod,
       imagen_pedido: imagen,
       nombre_pedido: nombre,
-      precio_pedido: division,
+      precio_pedido: subtotal,
       subtotal: subtotal
     })
     this.pedidos = []
@@ -257,8 +259,8 @@ id_prepedido
             this.pprepedidos.push(valores.id_prepedido)
           }else{
             const id_pedido=valores.id_prepedido
-            const subtotal = valores.precio_pedido * valores.cantidad_pedido;
-            this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa, this.id_prepedido)
+           // const subtotal = valores.precio_pedido * valores.cantidad_pedido;
+            this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, valores.subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, valores.subtotal, this.imagen_empresa, this.id_prepedido)
             this.deletePrepedidos(user.uid,valores.id_prepedido)
           }
           

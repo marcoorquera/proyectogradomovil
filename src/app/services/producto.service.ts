@@ -68,7 +68,7 @@ console.log("añadiendo a pedido final")
     
     })
   }
-  addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number){
+  addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number, precio_unit:number){
     const prepedido = this.afs.database.ref('/prepedido/'+id_usuario+"/")
     const id_prepedido = prepedido.push().key
   
@@ -79,11 +79,12 @@ console.log("añadiendo a pedido final")
       empresa: nombre_empresa,
       categoria_pedido: categoria,
       nombre_pedido: nombre,
-      precio_pedido: precio / cantidad,
+      precio_pedido: subtotal,
       cantidad_pedido: cantidad,
       imagen_pedido: imagen,
       subtotal: subtotal,
-      prepedido:1
+      prepedido:1,
+      precio_unit:precio_unit
     })   
     console.log("paso 1 prodcuto añadido") 
     /*

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 
 import { Plugins } from '@capacitor/core';
 import { CameraOptions, CameraResultType } from '@capacitor/camera';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 const { Camera } = Plugins
 
@@ -72,7 +73,8 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private AFauth: AngularFireAuth,
   ) { }
 
   ngOnInit() {
@@ -125,8 +127,10 @@ export class RegisterPage implements OnInit {
     }else{
       this.authService.register(this.email,this.password, this.name, this.lastname, this.phone, this.src)
      .then(res => {      
+
        this.errorMessage = "";
-       this.validations_form.reset()    
+       this.validations_form.reset()   
+       this.AFauth.signOut()
        //this.navCtrl.navigateForward("/home");
       }, err => {
        console.log(err);

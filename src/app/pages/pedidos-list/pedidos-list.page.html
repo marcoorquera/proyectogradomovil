@@ -16,17 +16,17 @@
       </div>
       <div class="div2">
         <p style="color: #3880ff;">{{pedido.nombre_pedido}}</p>
-        <p style="color: #3880ff;">{{pedido.subtotal}}</p>
+        <p style="color: #3880ff;">{{pedido.precio_unit}}</p>
       </div>
       <div class="div3">
         <div class="button1">
-          <button (click)="suma(pedido.id_prepedido, pedido.cantidad_pedido, pedido.categoria_pedido, pedido.empresa, pedido.id_prod, pedido.imagen_pedido, pedido.nombre_pedido, pedido.subtotal)" class="btnplus">+</button>
+          <button (click)="suma(pedido.id_usuario,pedido.id_prepedido, pedido.cantidad_pedido, pedido.categoria_pedido, pedido.empresa, pedido.id_prod, pedido.imagen_pedido, pedido.nombre_pedido, pedido.subtotal,pedido.precio_unit)" class="btnplus">+</button>
         </div>
         <div class="value">
           <p style="color: #3880ff;" id="valor">{{pedido.cantidad_pedido}}</p>      
         </div>
         <div class="button2">
-          <button (click)="resta(pedido.id_prepedido, pedido.cantidad_pedido, pedido.categoria_pedido, pedido.empresa, pedido.id_prod, pedido.imagen_pedido, pedido.nombre_pedido, pedido.subtotal)" class="btnless">-</button>
+          <button (click)="resta(pedido.id_usuario,pedido.id_prepedido, pedido.cantidad_pedido, pedido.categoria_pedido, pedido.empresa, pedido.id_prod, pedido.imagen_pedido, pedido.nombre_pedido, pedido.subtotal, pedido.precio_unit)" class="btnless">-</button>
         </div>
       </div> 
       <div class="div4">

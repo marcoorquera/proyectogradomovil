@@ -5,14 +5,12 @@
 export const environment = {
   production: false,
   firebase : {
-    apiKey: "AIzaSyCh5M0d2FXdGdsQFTv-s4wLiqSvPPKzGhA",
-    authDomain: "muebleriaglobal.firebaseapp.com",
-    databaseURL: "https://muebleriaglobal-default-rtdb.firebaseio.com",
-    projectId: "muebleriaglobal",
-    storageBucket: "muebleriaglobal.appspot.com",
-    messagingSenderId: "865651299911",
-    appId: "1:865651299911:web:655d7368ca2a9a42518362",
-    measurementId: "G-HC8W09VZ89"
+    apiKey: "AIzaSyBPjWc04idR3sqsPRijA5gN7Aix5T4Op_4",
+    authDomain: "muebleriaglobal593.firebaseapp.com",
+    projectId: "muebleriaglobal593",
+    storageBucket: "muebleriaglobal593.appspot.com",
+    messagingSenderId: "334005482144",
+    appId: "1:334005482144:web:4b125504f4dc7708ac0fc5"
   }
 };
 

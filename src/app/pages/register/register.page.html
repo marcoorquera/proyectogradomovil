@@ -5,7 +5,7 @@
 
     <div class="src">
       <p style="color: #3880ff; text-align: center;">Ingrese foto de perfil (obligatorio).</p>
-      <img *ngIf="src != ''" [src]="src" onerror="this.src='../../../assets/images/profile.png'"/>  
+      <img *ngIf="src != ''" [src]="src" style="width: 173px;" onerror="this.src='../../../assets/images/profile.png'"/>  
       <ion-button (click)="takePicture()">Tomar fotos</ion-button>
     </div>                               
                                
