@@ -40,6 +40,8 @@ export class ModalSearchPage implements OnInit {
   filtrPrepedidos: any[];
   prepedidosAngularList: AngularFireList<any>;
   observador: boolean = true;
+  
+  prepedidoIsEmpty: boolean = true;
 
   categorias = [];
   busqueda = [];
@@ -164,17 +166,19 @@ export class ModalSearchPage implements OnInit {
   }
 
   prepedidos;
-  prepedidosExist() {
+  async prepedidosExist() {
     this.auth.onAuthStateChanged((user) => {
       this.afs
         .list('prepedido/' + user.uid + '/')
         .valueChanges()
         .subscribe((data) => {
           this.prepedidos = data;
-          if (this.prepedidos.length == 0) {
-            document.getElementById('boton_pedido').style.display = 'none';
+          if (this.prepedidos.length > 0) {
+            this.prepedidoIsEmpty = false;
+            //document.getElementById('boton_pedido').style.display = 'block';
           } else {
-            document.getElementById('boton_pedido').style.display = 'block';
+            this.prepedidoIsEmpty = true;
+            //document.getElementById('boton_pedido').style.display = 'none';
           }
         });
     });
@@ -222,12 +226,8 @@ export class ModalSearchPage implements OnInit {
   }
 
   async validationExit() {
-    //console.log("verificando si exite prepedidos",this.prepedidos.length)
-    if (this.prepedidos.length) {
-      this.salir();
-    } else {
+
       this.modalCtrl.dismiss();
-    }
   }
 
   async salir() {

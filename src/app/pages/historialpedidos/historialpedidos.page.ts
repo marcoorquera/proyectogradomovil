@@ -71,7 +71,7 @@ export class HistorialpedidosPage implements OnInit {
     });
   }
   fecha;
-  async showPedidoFinal() {
+  showPedidoFinal() {
     this.auth.onAuthStateChanged((user) => {
       this.prodServ.getPedidoFinal(user.uid).subscribe((data) => {
         data.map((item) => {
@@ -117,6 +117,7 @@ export class HistorialpedidosPage implements OnInit {
                 direccion_vendedor:this.direccion
               });
             });
+            console.log('pedidos',this.pedidos)
           }
         });
       });

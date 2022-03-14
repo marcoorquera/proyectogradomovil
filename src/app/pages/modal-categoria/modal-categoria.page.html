@@ -45,13 +45,9 @@
       </ion-col>      
     </ion-row>
   </ion-grid>
-
-  <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" >
-    <button class="pedido-button">
-      pedidos
-    </button>  
-  </div>
-
-  
-
 </ion-content>
+<div class="pedido" id="boton_pedido" (click)="goToPedidoList() " [hidden]="prepedidoIsEmpty" >
+  <button class="pedido-button">
+    pedidos
+  </button>  
+</div>

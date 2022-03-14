@@ -389,14 +389,7 @@ prepedidos
   */
 
   async validationExit(){
-   
-    if( this.datos.length){
-      this.salir()
-    }else{
       this.modalCtrl.dismiss() 
-    }
-    
-    
   }
 
   async salir(){

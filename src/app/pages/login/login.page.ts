@@ -19,7 +19,8 @@ export class LoginPage implements OnInit {
   errMessage={
     'auth/user-not-found': 'Usuario no encontrado.',
     'auth/email-already-in-user': 'El correo electrónico ya se encuentra en uso.',
-    'auth/wrong-password': 'Contraseña incorrecta.' 
+    'auth/wrong-password': 'Contraseña incorrecta.',
+    'auth/too-many-requests': 'Cuenta bloqueada. Ingrese a "Olvide mi contraseña" y restaure su contraseña.'
   
   }
 

@@ -11,6 +11,7 @@ import { VendedorService } from 'src/app/services/vendedor.service';
 import { ModalCategoriaPage } from '../modal-categoria/modal-categoria.page';
 import { ModalSearchPage } from '../modal-search/modal-search.page';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { PedidosListPage } from '../pedidos-list/pedidos-list.page';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,7 @@ export class HomePage implements OnInit {
   
 
   textoBuscar = '';
+  listadoProducto: unknown[];
   constructor(
     private afAuth: AngularFireAuth,
     private menu:  MenuController,
@@ -41,6 +43,7 @@ export class HomePage implements OnInit {
       if(user){
         this.getEmpresa()
         this.getCategoria()
+        this.getPrepedidos()
 
       }else{
       
@@ -58,6 +61,26 @@ export class HomePage implements OnInit {
     })
 
   }
+
+  async getPrepedidos(){
+    this.auth.onAuthStateChanged((user) => {
+      this.afs
+        .list('prepedido/' + user.uid + '/')
+        .valueChanges()
+        .subscribe((data) => {
+          this.listadoProducto = data;
+          // console.log('el valor de lso datos son ', this.listadoProducto);
+          if (this.listadoProducto.length == 0) {
+            this.modalCtrl.dismiss();
+            document.getElementById('boton_pedido').style.display = 'none';
+          } else {
+            document.getElementById('boton_pedido').style.display = 'block';
+          }
+        });
+    });
+
+  }
+
 
   private zone: NgZone
   buscar(event: CustomEvent){    
@@ -142,7 +165,15 @@ export class HomePage implements OnInit {
     })
     return await modal.present();
   }
+  async goToPedidoList() {
+    //console.log("empresa1: "+this.nom_empresa)
+    const modal = await this.modalCtrl.create({
+      component: PedidosListPage,
+    });
+    await modal.present();
+  }
 
+  
   async showDetails(id_empresa, image_empresa, nombre_empresa){
     const modal = await this.modalCtrl.create({
       component: ProductInfoPage,
