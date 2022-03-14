@@ -1,7 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { ProductoService } from 'src/app/services/producto.service';
-import { AngularFireDatabase, AngularFireDatabaseModule, AngularFireList } from '@angular/fire/compat/database';
+import {
+  AngularFireDatabase,
+  AngularFireDatabaseModule,
+  AngularFireList,
+} from '@angular/fire/compat/database';
 import { ProductInfoPage } from '../product-info/product-info.page';
 import { PedidoFinalPage } from '../pedido-final/pedido-final.page';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -15,14 +23,13 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./pedidos-list.page.scss'],
 })
 export class PedidosListPage implements OnInit {
-
   @Input() empresa_prepedido;
-  @Input() imagen_empresa
+  @Input() imagen_empresa;
   @Input() producto;
-  pedidos = []
-  subtotal = []
+  pedidos = [];
+  subtotal = [];
   sub = 0;
-  pedidos_duplicados = []
+  pedidos_duplicados = [];
 
   cantidad_pedido: number = 0;
   sub_TotalFinal = null;
@@ -31,114 +38,71 @@ export class PedidosListPage implements OnInit {
 
   //prepedidos
   prepedidosFiltr: any[];
-  prepedidosAngularList: AngularFireList<any>
+  prepedidosAngularList: AngularFireList<any>;
   filtrPrepedidos: any[];
 
   //subtotal
   subtotalFiltr: any[];
-  subtotalAngularFireList: AngularFireList<any>
+  subtotalAngularFireList: AngularFireList<any>;
   filtrSubtotal: any[];
 
-  constructor( private navCtrl: NavController,
+  constructor(
+    private navCtrl: NavController,
     private modalCtrl: ModalController,
     private productService: ProductoService,
     private afs: AngularFireDatabase,
     private auth: AngularFireAuth,
     private alertCtrl: AlertController,
-    private VendedorServ: VendedorService) { }
+    private VendedorServ: VendedorService
+  ) {}
 
   ngOnInit() {
+    this.auth.onAuthStateChanged((user) => {
+      this.user_id = user.uid;
+      this.showPrepedidos();
+      this.guardarPedidos();
+    });
 
-    this.auth.onAuthStateChanged(user => {
-      this.user_id = user.uid
-      this.showPrepedidos()
-      this.guardarPedidos()
-    })
-
-
-    // this.PrepedidosExist()
-
-    //this.subTotalFinal()
   }
 
-
-
-  notfunction() {
-    this.pedidos = []
-    this.productService.geteditPedidos().subscribe(data => {
-      data.map((item) => {
-        if (item.empresa === this.empresa_prepedido) {
-          this.nombre_empresa_pedido = item.empresa
-          //console.log("nombre empresa: "+item.empresa+" empresa: "+this.empresa_prepedido)
-          this.pedidos.push({
-            nombre_pedido: item.nombre_pedido,
-            precio: (item.precio_pedido * item.cantidad_pedido),
-            categoria: item.categoria_pedido,
-            cantidad: item.cantidad_pedido,
-            empresa: item.empresa,
-            imagen: item.imagen_pedido,
-            id: item.id_prepedido,
-            id_prod: item.id_prod,
-            subtotal: item.subtotal
-          })
-
-          this.pedidos_duplicados = Array.from(this.pedidos.reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map()).values())
-          //poner aqui subtotal
-          this.pedidos_duplicados.map((data => {
-            console.log("data;===> ", data.subtotal)
-
-            //this.sub_TotalFinal = 0;
-            //let subtotal = parseFloat(data.subtotal)
-            //this.subtotal.push(data.subtotal)
-            //console.log("subtotal_productos: "+this.subtotal)
-            //this.sub_TotalFinal = this.subtotal.reduce((a,b) => a+b, 0)
-            //console.log("suma: "+this.sub_TotalFinal) 
-          }))
-
-
-
-        }
-      })
-    })
-  }
-  listadoProducto
+ 
+  listadoProducto;
   async showPrepedidos() {
-    this.auth.onAuthStateChanged(user => {
-     
-      this.afs.list('prepedido/' + user.uid + "/").valueChanges().subscribe(data => {
+    this.auth.onAuthStateChanged((user) => {
+      this.afs
+        .list('prepedido/' + user.uid + '/')
+        .valueChanges()
+        .subscribe((data) => {
+          this.listadoProducto = data;
+          // console.log('el valor de lso datos son ', this.listadoProducto);
+          if (this.listadoProducto.length == 0) {
+            this.modalCtrl.dismiss();
+            document.getElementById('boton_pedido').style.display = 'none';
+          } else {
+            document.getElementById('boton_pedido').style.display = 'block';
+          }
+        });
 
-        this.listadoProducto = data
-        console.log("el valor de lso datos son ", this.listadoProducto)
-        if (this.listadoProducto.length == 0) {
-          this.modalCtrl.dismiss();
-          document.getElementById('boton_pedido').style.display = 'none';
-        } else {
-          document.getElementById('boton_pedido').style.display = 'block';
-        }
-      })
-      
-      this.prepedidosAngularList = this.afs.list('prepedido/'+ user.uid + "/")
-      this.prepedidosAngularList.snapshotChanges().subscribe(
-        list => {
-          
-
-          this.prepedidosFiltr = list.map(item => {
-            return{
-              $key: item.key,
-              ...item.payload.val()
-            }
-          })
-          this.filtrPrepedidos = this.prepedidosFiltr
-          //.filter(value => value.empresa === this.empresa_prepedido)
-          this.pedidos_duplicados = Array.from(this.filtrPrepedidos.reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map()).values())
-          this.sub_TotalFinal = this.pedidos_duplicados.map(data => data.subtotal).reduce((sum, current) => sum + current, 0)
-         
-        }
-      )
-
-    })
-
-    
+      this.prepedidosAngularList = this.afs.list('prepedido/' + user.uid + '/');
+      this.prepedidosAngularList.snapshotChanges().subscribe((list) => {
+        this.prepedidosFiltr = list.map((item) => {
+          return {
+            $key: item.key,
+            ...item.payload.val(),
+          };
+        });
+        this.filtrPrepedidos = this.prepedidosFiltr;
+        //.filter(value => value.empresa === this.empresa_prepedido)
+        this.pedidos_duplicados = Array.from(
+          this.filtrPrepedidos
+            .reduce((map, obj) => map.set(obj.nombre_pedido, obj), new Map())
+            .values()
+        );
+        this.sub_TotalFinal = this.pedidos_duplicados
+          .map((data) => data.subtotal)
+          .reduce((sum, current) => sum + current, 0);
+      });
+    });
   }
 
   // prepedidos
@@ -149,35 +113,30 @@ export class PedidosListPage implements OnInit {
   //         this.prepedidos=data
   //     })
 
-
   //   })
-
 
   // }
 
-  suma(id_usuario,id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio,precio_unit) {
+  suma(
+    id_usuario,
+    id,
+    cantidad,
+    categoria,
+    empresa,
+    id_prod,
+    imagen,
+    nombre,
+    precio,
+    precio_unit
+  ) {
     this.sub = 0;
     this.subtotal = [];
     this.sub_TotalFinal = 0;
-    console.log("cantidad antes antes: "+cantidad)
-    
-    //console.log("nombre: "+nombre_selected)
-    // console.log("id_prepedido: "+id)
-    // console.log("cantidad: "+cantidad)
-    // console.log("categoria: "+categoria)
-    // console.log("id_prd: "+id_prod)
-    // console.log("imagen: "+imagen)
-    // console.log("nombre: "+nombre)
-        
-    console.log("cantidad antes: "+cantidad)
-    cantidad = cantidad + 1   
-    const division = precio_unit*cantidad  
-    console.log("division: "+division)
-    console.log("cantidad: "+cantidad)  
-    // console.log("subtotal: "+division +"/"+ cantidad)
-    const subtotal = division 
-    this.pedidos = []
-    this.afs.database.ref('/prepedido/' + id_usuario+'/'+id ).update({
+    cantidad = cantidad + 1;
+    const division = precio_unit * cantidad;
+    const subtotal = division;
+    this.pedidos = [];
+    this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
       cantidad_pedido: cantidad,
       categoria_pedido: categoria,
       empresa: empresa,
@@ -186,22 +145,37 @@ export class PedidosListPage implements OnInit {
       imagen_pedido: imagen,
       nombre_pedido: nombre,
       precio_pedido: division,
-      subtotal: division
-    })
-
-
+      subtotal: division,
+    });
   }
 
-  resta(id_usuario,id, cantidad, categoria, empresa, id_prod, imagen, nombre, precio,precio_unit) {
-    //console.log("nombre: "+nombre_selected)
-    //const division = precio/cantidad  
-    cantidad = cantidad - 1    
-    // console.log("division: "+division)
-    // console.log("cantidad: "+cantidad)  
-    // console.log("subtotal: "+division +"/"+ cantidad)
-    const subtotal = precio_unit * cantidad
+  resta(
+    id_usuario,
+    id,
+    cantidad,
+    categoria,
+    empresa,
+    id_prod,
+    imagen,
+    nombre,
+    precio,
+    precio_unit
+  ) {
+    let subtotal_res
+    cantidad = cantidad - 1;
+    console.log('cantidad',cantidad)
+    subtotal_res = precio_unit * cantidad;
+    // if (cantidad==0){
+    //   cantidad=1
+    //   //cantidad = cantidad - 1;
+    //   subtotal_res = precio_unit * 1;
+    // }else{
+    //   //cantidad = cantidad - 1;
+    //   subtotal_res = precio_unit * cantidad;
+    // }
+    console.log('cantidad',subtotal_res)
 
-    this.afs.database.ref('/prepedido/' + id_usuario+'/'+id ).update({
+    this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
       cantidad_pedido: cantidad,
       categoria_pedido: categoria,
       empresa: empresa,
@@ -209,102 +183,81 @@ export class PedidosListPage implements OnInit {
       id_prod: id_prod,
       imagen_pedido: imagen,
       nombre_pedido: nombre,
-      precio_pedido: subtotal,
-      subtotal: subtotal
-    })
-    this.pedidos = []
+      precio_pedido: subtotal_res,
+      subtotal: subtotal_res,
+    });
+    this.pedidos = [];
     this.sub_TotalFinal = null;
-
   }
 
+  datos;
+  pedido;
+  id_prepedido;
+  savePedidos() {
 
-datos
-pedido
-id_prepedido
-  savePedidos(){
-    //this.id_pedido_generate=''
-    
-    this.auth.onAuthStateChanged(user => {
-      // var pedido_2 = this.afs.database.ref('/pedido_final/'+user.uid+"/")
-      // console.log(pedido_2,'pedido_2')
-      // this.id_pedido_generate = pedido_2.push().key
-      
-      //console.log('---------------',this.pedido.push().key)
+    this.auth.onAuthStateChanged((user) => {
       for (const i in this.pprepedidos) {
-        console.log("estoy en el sabePedidos",this.pprepedidos[i])
-       ///probar aqui
-       this.afs.database.ref('/prepedido/' + user.uid + "/" + this.pprepedidos[i]).update({
-         prepedido:0
-       })
-       this.id_prepedido=this.pprepedidos[0]
-
+        console.log('estoy en el sabePedidos', this.pprepedidos[i]);
+        ///probar aqui
+        this.afs.database
+          .ref('/prepedido/' + user.uid + '/' + this.pprepedidos[i])
+          .update({
+            prepedido: 0,
+          });
+        this.id_prepedido = this.pprepedidos[0];
       }
 
-      this.pedidoGuardado()
-    })
-
+      this.pedidoGuardado();
+    });
   }
-  
-  pprepedidos=[]
-   async guardarPedidos() {
-  
-  
-    this.auth.onAuthStateChanged(user => {
-    
-      
-      this.productService.obtenerPrepedidos(user.uid).subscribe(data => {
+
+  pprepedidos = [];
+  async guardarPedidos() {
+    this.auth.onAuthStateChanged((user) => {
+      this.productService.obtenerPrepedidos(user.uid).subscribe((data) => {
         data.map((valores) => {
           //console.log('Valores push /////',this.id_prepedido)
-          if (valores.prepedido===1){
-            this.pprepedidos.push(valores.id_prepedido)
-          }else{
-            const id_pedido=valores.id_prepedido
-           // const subtotal = valores.precio_pedido * valores.cantidad_pedido;
-            this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, valores.subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, valores.subtotal, this.imagen_empresa, this.id_prepedido)
-            this.deletePrepedidos(user.uid,valores.id_prepedido)
+          if (valores.prepedido === 1) {
+            this.pprepedidos.push(valores.id_prepedido);
+          } else {
+            const id_pedido = valores.id_prepedido;
+            // const subtotal = valores.precio_pedido * valores.cantidad_pedido;
+            this.productService.addPedidoFinal(
+              valores.id_usuario,
+              valores.id_prepedido,
+              valores.nombre_pedido,
+              valores.subtotal,
+              valores.categoria_pedido,
+              valores.cantidad_pedido,
+              valores.empresa,
+              valores.imagen_pedido,
+              valores.id_prod,
+              valores.subtotal,
+              this.imagen_empresa,
+              this.id_prepedido
+            );
+            this.deletePrepedidos(user.uid, valores.id_prepedido);
           }
-          
 
           //const subtotal = valores.precio_pedido * valores.cantidad_pedido;
           //this.productService.addPedidoFinal(valores.id_usuario, valores.id_prepedido, valores.nombre_pedido, subtotal, valores.categoria_pedido, valores.cantidad_pedido, valores.empresa, valores.imagen_pedido, valores.id_prod, subtotal, this.imagen_empresa)
-          
-           
-            
-          
-         
-        })
-       
-      })
-          
-      
-     
-      
-      
-    })
-    
-    }
-           
-    
+        });
+      });
+    });
+  }
 
-    //console.log("guardando pedidos ", empresa) 
-
-  
   deletePrepedidos(uid, id_prepedido) {
-    console.log("eliminando prepedido")
-
-    this.afs.database.ref('/prepedido/' + uid + "/" + id_prepedido).remove()
-
+    this.afs.database.ref('/prepedido/' + uid + '/' + id_prepedido).remove();
   }
   async viewdataTienda() {
     const modal = this.modalCtrl.create({
       component: PedidoFinalPage,
       componentProps: {
         nombre_empresa: this.empresa_prepedido,
-        imagen_empresa: this.imagen_empresa
+        imagen_empresa: this.imagen_empresa,
+      },
+    });
 
-      }
-    })
-    
     return (await modal).present();
   }
   seguirComprando() {
@@ -326,64 +279,33 @@ id_prepedido
           text: 'Ok',
           role: 'ok',
           handler: () => {
-
-        
-        this.modalCtrl.dismiss()
-          console.log("-------",this.producto)
-            if (this.producto){
-              console.log("lleno",this.producto)
-              this.goToPedidos()
-            }else{
-              console.log("vacio",this.producto)
-              this.viewdataTienda()
+            this.modalCtrl.dismiss();
+            if (this.producto) {
+              this.goToPedidos();
+            } else {
+              this.viewdataTienda();
             }
-       
-            
-           
-            
-            
-  //this.goToPedidos()
 
-          }
-        }]
-
-    })
+            //this.goToPedidos()
+          },
+        },
+      ],
+    });
     await alert.present();
   }
 
   delete(id) {
-    this.auth.onAuthStateChanged(user => {
-
-      this.afs.database.ref('/prepedido/' + user.uid + "/" + id).remove()
-
-    })
-
-
-
+    this.auth.onAuthStateChanged((user) => {
+      this.afs.database.ref('/prepedido/' + user.uid + '/' + id).remove();
+    });
   }
 
   salir() {
-    this.modalCtrl.dismiss()
-
+    this.modalCtrl.dismiss();
   }
 
-// async validationExit(){
-//   console.log("valid exit",this.datos)
-//     if( this.listadoProducto.length>0){
-//       console.log("imprimiendo gg",this.datos)
 
-//       this.savePedidos()
-      
-     
-//     }else{
-//       this.salir()
-    
-//     }
-    
-    
-//   }
-
-  goToPedidos(){
-    this.navCtrl.navigateForward("/menu/pedido")
+  goToPedidos() {
+    this.navCtrl.navigateForward('/menu/pedido');
   }
 }

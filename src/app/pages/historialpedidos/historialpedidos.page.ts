@@ -11,14 +11,13 @@ import { async } from 'rxjs';
   styleUrls: ['./historialpedidos.page.scss'],
 })
 export class HistorialpedidosPage implements OnInit {
-
-  @Input() id_pedido
-  nombre_empresa
-  pedidos = []
-  vendedores = []
-  productos = []
-  vendedoreSelected = []
-  subtotalArray = []
+  @Input() id_pedido;
+  nombre_empresa;
+  pedidos = [];
+  vendedores = [];
+  productos = [];
+  vendedoreSelected = [];
+  subtotalArray = [];
 
   subtotalfinal = null;
 
@@ -31,136 +30,100 @@ export class HistorialpedidosPage implements OnInit {
     private modalCtrl: ModalController,
     private vendedorServ: VendedorService,
     private prodServ: ProductoService,
-    private auth: AngularFireAuth,
-  ) { }
+    private auth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
-    console.log('id_pedido',this.id_pedido.id)
     //this.showEmpresa()
-    this.subTotalFinal()
-    this.showPedidoFinal()
-    
-
+    this.subTotalFinal();
+    this.showPedidoFinal();
   }
 
-  subTotalFinal(){
-    this.auth.onAuthStateChanged(user => {
-      this.prodServ.getPedidoFinal(user.uid).subscribe(data => {
-        data.map(item => {
-          if(item.empresa_pedido === this.nombre_empresa){
-            let subtotal = parseFloat(item.subtotal)
-            this.subtotalArray.push(subtotal)
-            this.subtotalfinal = this.subtotalArray.reduce((a,b) => a+b, 0)
-            //console.log("subtotal final: "+this.subTotalFinal)
-          }
-        })
-      })
-
-     })
-    
-  }
-
-  showEmpresa(){
-    this.vendedorServ.getVendedor().subscribe(
-      list => {
-        this.vendedores = list.map(item => {
-          return {
-            $key: item.key,
-            ...item.payload.val()
-          }
-        })
-        this.vendedores.map(item => {
-          
-          if(item.nombre_empresa === this.nombre_empresa){
-            this.direccion = item.direccion_vendedor
-            this.telefono = item.telefono_vendedor
-            this.email = item.email_vendedor
-            console.log("direccion: "+this.direccion)
-            console.log("telefono: "+this.telefono)
-            console.log("email: "+this.email)
-          }
-        })
-        
-      }
-    )
-  }
-fecha
-  async showPedidoFinal()
-  {
-    this.auth.onAuthStateChanged(user => {
-
-
-
-
-      this.prodServ.getPedidoFinal(user.uid).subscribe(data => {
+  subTotalFinal() {
+    this.auth.onAuthStateChanged((user) => {
+      this.prodServ.getPedidoFinal(user.uid).subscribe((data) => {
         data.map((item) => {
-          if(item.id_pedido === this.id_pedido){
-            this.prodServ.getProduct().subscribe(prod => {
-                this.productos = prod.map(ite => {
-                    if(ite.id_prod == item.id_prod){
-                      this.precioUni=ite.precio_producto
-                    }
-                  })
-             
-            })
+          if (item.empresa_pedido === this.nombre_empresa) {
+            let subtotal = parseFloat(item.subtotal);
+            this.subtotalArray.push(subtotal);
+            this.subtotalfinal = this.subtotalArray.reduce((a, b) => a + b, 0);
+          }
+        });
+      });
+    });
+  }
 
-          this.vendedorServ.getVendedor().subscribe(
-            list => {
-            this.vendedores = list.map(item => {
+  showEmpresa() {
+    this.vendedorServ.getVendedor().subscribe((list) => {
+      this.vendedores = list.map((item) => {
+        return {
+          $key: item.key,
+          ...item.payload.val(),
+        };
+      });
+      this.vendedores.map((item) => {
+        if (item.nombre_empresa === this.nombre_empresa) {
+          this.direccion = item.direccion_vendedor;
+          this.telefono = item.telefono_vendedor;
+          this.email = item.email_vendedor;
+        }
+      });
+    });
+  }
+  fecha;
+  async showPedidoFinal() {
+    this.auth.onAuthStateChanged((user) => {
+      this.prodServ.getPedidoFinal(user.uid).subscribe((data) => {
+        data.map((item) => {
+          if (item.id_pedido === this.id_pedido) {
+            this.prodServ.getProduct().subscribe((prod) => {
+              this.productos = prod.map((ite) => {
+                if (ite.id_prod == item.id_prod) {
+                  this.precioUni = ite.precio_producto;
+                }
+              });
+            });
+
+            this.vendedorServ.getVendedor().subscribe((list) => {
+              this.vendedores = list.map((item) => {
                 return {
                   $key: item.key,
-                  ...item.payload.val()
-                }
-              })
-               
-            this.vendedores= this.vendedores.filter(value => value.nombre_empresa == item.empresa_pedido)
-    
-               this.vendedores.map(it=>{
-                this.email=it.email_vendedor
-                this.telefono=it.telefono_vendedor
-                
-    
-              })
+                  ...item.payload.val(),
+                };
+              });
 
-              console.log("valor de lso vendedrores: "+this.email,this.telefono)
+              this.vendedores = this.vendedores.filter(
+                (value) => value.nombre_empresa == item.empresa_pedido
+              );
 
-              
-            
-                this.pedidos.push({
-                  cantidad_pedido: item.cantidad_pedido,
-                  categoria_pedido: item.categoria_pedido,
-                  empresa_pedido: item.empresa_pedido,
-                  id_pedido: item.id_pedido,
-                  id_prod: item.id_prod,
-                  imagen_pedido: item.imagen_pedido,
-                  nombre_pedido: item.nombre_pedido,
-                  precio_pedido: item.precio_pedido,
-                  fecha:item.fecha_pedido,
-                  email: this.email,
-                  telefono: this.telefono,
-                  precio_uni: this.precioUni
-                })
-                
-                // this.fecha=item.fecha_pedido
-                //console.log("length: "+this.fecha)
-              
-            })
-
+              this.vendedores.map((it) => {
+                this.email = it.email_vendedor;
+                this.telefono = it.telefono_vendedor;
+                this.direccion=it.direccion_vendedor;
+              });
+              this.pedidos.push({
+                cantidad_pedido: item.cantidad_pedido,
+                categoria_pedido: item.categoria_pedido,
+                empresa_pedido: item.empresa_pedido,
+                id_pedido: item.id_pedido,
+                id_prod: item.id_prod,
+                imagen_pedido: item.imagen_pedido,
+                nombre_pedido: item.nombre_pedido,
+                precio_pedido: item.precio_pedido,
+                fecha: item.fecha_pedido,
+                email: this.email,
+                telefono: this.telefono,
+                precio_uni: this.precioUni,
+                direccion_vendedor:this.direccion
+              });
+            });
           }
-      
-       
-         
-        })
-        
-      })
-
-     })
-    
-    
+        });
+      });
+    });
   }
 
-  close(){
-    this.modalCtrl.dismiss()
+  close() {
+    this.modalCtrl.dismiss();
   }
-
 }

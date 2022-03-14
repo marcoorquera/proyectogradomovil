@@ -71,7 +71,6 @@ export class ModalPedidoPage implements OnInit {
     //console.log("decremento: "+this.pedido)
     stock = this.cantidad - this.pedido
     if((this.pedido -1 ) <= 0){
-      console.log("error")
       this.emptyStock()
       this.isDisabled_resta = true;
       this.pedido = 0
@@ -79,7 +78,6 @@ export class ModalPedidoPage implements OnInit {
   }
   
    contactoEmpresa(id_usuario, nombre_producto, precio, cantidad, imagen, subtotal){
-     console.log("boton anadir precionado")
 
     this.auth.onAuthStateChanged(user => {
       console.log(user.uid, this.nombre_empresa ,this.id, this.categoria_prod, nombre_producto,precio, cantidad, imagen, subtotal)

@@ -13,59 +13,50 @@ import { PedidosListPage } from '../pedidos-list/pedidos-list.page';
   styleUrls: ['./modal-categoria.page.scss'],
 })
 export class ModalCategoriaPage implements OnInit {
-
   @Input() categoria;
   textoBuscarProd = '';
-  productos= [];
+  productos = [];
 
   constructor(
     private modalCtrl: ModalController,
     public alertController: AlertController,
-    public prodServ: ProductoService,private auth: AngularFireAuth,private afs: AngularFireDatabase,
-    ) { }
+    public prodServ: ProductoService,
+    private auth: AngularFireAuth,
+    private afs: AngularFireDatabase
+  ) { }
 
   ngOnInit() {
-    console.log("categoria: "+this.categoria)
-    this.getProd()
-    this.prepedidosExist()
+    this.getProd();
+    this.prepedidosExist();
   }
 
-  buscarProd(event: CustomEvent){
+  buscarProd(event: CustomEvent) {
     this.textoBuscarProd = event.detail.value;
-    console.log("busqueda: "+this.textoBuscarProd)
   }
 
-  async getProd(){
-    this.prodServ.getProduct().subscribe(data => {
+  async getProd() {
+    this.prodServ.getProduct().subscribe((data) => {
       data.map((item) => {
-        
-      if(item.categoria_producto === this.categoria){
+        if (item.categoria_producto === this.categoria) {
+          this.productos.push({
+            nombre_producto: item.nombre_producto,
+            descripcion_producto: item.descripcion_producto,
+            cantidad_producto: item.cantidad_producto,
+            categoria_producto: item.categoria_producto,
+            empresa_proveedor: item.empresa_proveedor,
+            precio_producto: item.precio_producto,
+            image_producto: item.image_producto,
+            image_empresa: item.image_empresa,
+            estado: item.estado,
+            id_prod: item.id_prod,
+            uid_user: item.uid_user,
+          });
 
-        this.productos.push({
-          nombre_producto: item.nombre_producto,
-          descripcion_producto: item.descripcion_producto,
-          cantidad_producto: item.cantidad_producto,
-          categoria_producto: item.categoria_producto,
-          empresa_proveedor: item.empresa_proveedor,
-          precio_producto: item.precio_producto,
-          image_producto: item.image_producto,
-          image_empresa:item.image_empresa,
-          estado:item.estado,
-          id_prod:item.id_prod,
-          uid_user:item.uid_user
-
-
-          
-
-        })
-        
-        this.productos=this.productos.filter(value => value.estado == 1)
-      }
-     
-      })
-    })
+          this.productos = this.productos.filter((value) => value.estado == 1);
+        }
+      });
+    });
   }
-
 
   @Input() nombre;
   @Input() proveedor;
@@ -76,13 +67,24 @@ export class ModalCategoriaPage implements OnInit {
   @Input() image;
   @Input() id;
   @Input() nombre_empresa;
-  empresa_producto='';
-  image_empresa='';
-  async modalPedido(nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto, uid_user,image_producto, empresa_proveedor, id_prod,image_empresa){
-    console.log(nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto, uid_user,image_producto, empresa_proveedor, id_prod,image_empresa)
-    
-    this.empresa_producto=empresa_proveedor;
-    this.image_empresa=image_empresa;
+  empresa_producto = '';
+  image_empresa = '';
+  async modalPedido(
+    nombre_producto,
+    nombre_proveedor,
+    descripcion_producto,
+    categoria_producto,
+    cantidad_producto,
+    precio_producto,
+    uid_user,
+    image_producto,
+    empresa_proveedor,
+    id_prod,
+    image_empresa
+  ) {
+
+    this.empresa_producto = empresa_proveedor;
+    this.image_empresa = image_empresa;
     const modal = await this.modalCtrl.create({
       component: ModalPedidoPage,
       componentProps: {
@@ -90,51 +92,43 @@ export class ModalCategoriaPage implements OnInit {
         proveedor: nombre_proveedor,
         descripcion: descripcion_producto,
         cantidad: cantidad_producto,
-        precio: precio_producto, 
+        precio: precio_producto,
         id_user: uid_user,
         image: image_producto,
-        nombre_empresa:empresa_proveedor, 
+        nombre_empresa: empresa_proveedor,
         id: id_prod,
-        categoria_prod:categoria_producto
-      }
-    })
-    this.prepedidosExist()
+        categoria_prod: categoria_producto,
+      },
+    });
+    this.prepedidosExist();
     return await modal.present();
   }
 
-  prepedidos
-  prepedidosExist(){
-   
-    this.auth.onAuthStateChanged(user => {
-       this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
-          this.prepedidos=data
-         
-          console.log("verificando si exite prepedidos",this.prepedidos.imagen_empresa)
+  prepedidos;
+  prepedidosExist() {
+    this.auth.onAuthStateChanged((user) => {
+      this.afs
+        .list('prepedido/' + user.uid + '/')
+        .valueChanges()
+        .subscribe((data) => {
+          this.prepedidos = data;
           if (this.prepedidos.length == 0) {
             document.getElementById('boton_pedido').style.display = 'none';
           } else {
             document.getElementById('boton_pedido').style.display = 'block';
           }
-      })
-      
-      
-    })
-    
-      
+        });
+    });
   }
-  async validationExit(){
-    console.log("verificando si exite prepedidos",this.prepedidos.length)
-    if(this.prepedidos.length){
-      this.salir()
-    }else{
-      this.modalCtrl.dismiss() 
+  async validationExit() {
+    if (this.prepedidos.length) {
+      this.salir();
+    } else {
+      this.modalCtrl.dismiss();
     }
-    
-    
   }
-  
 
-  async salir(){
+  async salir() {
     const alert = await this.alertController.create({
       animated: true,
       cssClass: 'alert',
@@ -149,47 +143,29 @@ export class ModalCategoriaPage implements OnInit {
           text: 'Ok',
           role: 'ok',
           handler: () => {
+            this.auth.onAuthStateChanged((user) => {
+              this.prodServ.deleteprepedidos(user.uid);
+            });
 
-            this.auth.onAuthStateChanged(user => { 
-            
-         
-                  console.log("estoy en el if del ok para eliminar")
-                  
-                  this.prodServ.deleteprepedidos(user.uid)})
+            this.modalCtrl.dismiss();
+          },
+        },
+      ],
+    });
 
-                  
-                  
-                
-            
-            this.modalCtrl.dismiss()
-            //location.reload();
-          }
-        }
-        
-        
-      ]
-
-    })
-    
     await alert.present();
-    //this.modalCtrl.dismiss();
-    
   }
- 
 
   producto: boolean = true;
-  async goToPedidoList(){
-    //console.log("empresa1: "+this.nom_empresa)
+  async goToPedidoList() {
     const modal = await this.modalCtrl.create({
       component: PedidosListPage,
       componentProps: {
         producto: this.producto,
         empresa_prepedido: this.empresa_producto,
-        imagen_empresa:this.image_empresa
-      }
-    })
-    await modal.present()
+        imagen_empresa: this.image_empresa,
+      },
+    });
+    await modal.present();
   }
-  
-
 }

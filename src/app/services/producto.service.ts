@@ -50,7 +50,6 @@ export class ProductoService {
     const pedido = this.afs.database.ref('/pedido_final/'+id_usuario+"/")
     const id_pedido_generate = pedido.push().key
     var dta=Date.now()
-console.log("añadiendo a pedido final")
     this.afs.object('/pedido_final/'+id_usuario+"/"+id_pedido).update({
       id_pedido: id_prepedido,
       id_usuario: id_usuario,
@@ -64,7 +63,7 @@ console.log("añadiendo a pedido final")
       subtotal: subtotal,
       imagen_empresa: imagen_empresa,
       fecha_pedido: ("0" + new Date(dta).getDate()).slice(-2) + '/' + (("0" + (new Date(dta).getMonth() + 1)).slice(-2)
-      ) + '/' + new Date(dta).getFullYear()
+      ) + '/' + new Date(dta).getFullYear()+' '+ (new Date(dta).getHours()< 10 ? "0" + new Date(dta).getHours() : +new Date(dta).getHours())+':'+(new Date(dta).getMinutes()< 10 ? "0" + new Date(dta).getMinutes() : +new Date(dta).getMinutes())+':'+(new Date(dta).getSeconds()< 10 ? "0" + new Date(dta).getSeconds() : +new Date(dta).getSeconds())
     
     })
   }
@@ -86,7 +85,6 @@ console.log("añadiendo a pedido final")
       prepedido:1,
       precio_unit:precio_unit
     })   
-    console.log("paso 1 prodcuto añadido") 
     /*
       this.prepedidoList = this.afs.list('/prepedido/')    
     this.prepedidoList.snapshotChanges().pipe(
