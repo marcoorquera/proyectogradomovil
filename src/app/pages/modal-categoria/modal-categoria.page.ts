@@ -50,9 +50,10 @@ export class ModalCategoriaPage implements OnInit {
             estado: item.estado,
             id_prod: item.id_prod,
             uid_user: item.uid_user,
+            estadoP: item.estadoP,
           });
 
-          this.productos = this.productos.filter((value) => value.estado == 1);
+          this.productos = this.productos.filter((value) => value.estado == 1 && value.estadoP ==1);
         }
       });
     });

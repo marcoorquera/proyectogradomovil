@@ -196,7 +196,7 @@ export class ModalSearchPage implements OnInit {
           ...item.payload.val(),
         };
       });
-      this.productos = this.productos.filter((value) => value.estado == 1);
+      this.productos = this.productos.filter((value) => value.estado == 1 && value.estadoP==1);
       this.productos.map((item) => {
         item.nombre_producto,
           item.empresa_proveedor,

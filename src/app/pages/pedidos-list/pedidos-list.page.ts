@@ -132,8 +132,9 @@ export class PedidosListPage implements OnInit {
     this.sub = 0;
     this.subtotal = [];
     this.sub_TotalFinal = 0;
+    
     cantidad = cantidad + 1;
-    const division = precio_unit * cantidad;
+    const division = Math.round((precio_unit * cantidad)*100)/100 ;
     const subtotal = division;
     this.pedidos = [];
     this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
@@ -149,7 +150,7 @@ export class PedidosListPage implements OnInit {
     });
   }
 
-  resta(
+   resta(
     id_usuario,
     id,
     cantidad,
@@ -161,21 +162,18 @@ export class PedidosListPage implements OnInit {
     precio,
     precio_unit
   ) {
-    let subtotal_res
+    var subtotal_res
     cantidad = cantidad - 1;
     console.log('cantidad',cantidad)
-    subtotal_res = precio_unit * cantidad;
-    // if (cantidad==0){
-    //   cantidad=1
-    //   //cantidad = cantidad - 1;
-    //   subtotal_res = precio_unit * 1;
-    // }else{
-    //   //cantidad = cantidad - 1;
-    //   subtotal_res = precio_unit * cantidad;
-    // }
+    //
+    if((cantidad -1 ) <= 0){
+      
+      cantidad = 1
+    }
+    subtotal_res = Math.round((precio_unit * cantidad)*100)/100 ; 
     console.log('cantidad',subtotal_res)
 
-    this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
+     this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
       cantidad_pedido: cantidad,
       categoria_pedido: categoria,
       empresa: empresa,
@@ -280,11 +278,8 @@ export class PedidosListPage implements OnInit {
           role: 'ok',
           handler: () => {
             this.modalCtrl.dismiss();
-            if (this.producto) {
-              this.goToPedidos();
-            } else {
-              this.viewdataTienda();
-            }
+            this.goToPedidos();
+           
 
             //this.goToPedidos()
           },

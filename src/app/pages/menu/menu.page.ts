@@ -6,6 +6,7 @@ import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/aut
 import { AngularFireDatabase, AngularFireObject, snapshotChanges } from '@angular/fire/compat/database';
 
 import { MenuController } from '@ionic/angular';
+import { ProductoService } from 'src/app/services/producto.service';
 
 
 @Component({
@@ -25,7 +26,9 @@ export class MenuPage implements OnInit {
     private authservice: AuthService,
     private menu:  MenuController,
     private afAuth: AngularFireAuth,    
-    private afs: AngularFireDatabase
+    private afs: AngularFireDatabase,
+    public prodServ: ProductoService,
+    
   ) {}
   
   ngOnInit() {
@@ -63,6 +66,9 @@ export class MenuPage implements OnInit {
     this.navCtrl.navigateForward("/menu/pedido")
   }
   logout(){
+    this.afAuth.onAuthStateChanged((user) => {
+      this.prodServ.deleteprepedidos(user.uid);
+    });
     this.afAuth.signOut()
     this.navCtrl.navigateBack('/login')
   }

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from '../../services/auth.service';
+import { ProductoService } from 'src/app/services/producto.service';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,private alertCtroller: AlertController,
+    private auth: AngularFireAuth,
+    public prodServ: ProductoService,
   ) { }
 
   ngOnInit() {
@@ -69,6 +72,9 @@ export class LoginPage implements OnInit {
           if (res.user.uid == this.usuario.uid  ){
             this.navCtrl.navigateForward("/menu/home");
             this.validations_form.reset()
+            this.auth.onAuthStateChanged((user) => {
+              this.prodServ.deleteprepedidos(user.uid);
+            });
           }else{
             this.navCtrl.navigateForward('/register');
           }

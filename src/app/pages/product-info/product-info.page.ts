@@ -126,7 +126,7 @@ prepedidos
           }
         })
         //console.log("filtro: "+this.prodFiltr)
-        this.filtrprod = this.prodFiltr.filter(value => value.categoria_producto === 'silla' &&  value.empresa_proveedor === this.nom_empresa)
+        this.filtrprod = this.prodFiltr.filter(value => value.categoria_producto === 'silla' &&  value.uid_user === this.id)
         this.filtrprod.map(data => {
           //console.log("filtro: "+data.nombre_producto)
         })
@@ -148,8 +148,7 @@ prepedidos
             ...item.payload.val()
           }
         })
-        this.filtrlistprodExist = this.listprodFiltrExist.filter(value => value.empresa_proveedor === this.nom_empresa)
-        
+        this.filtrlistprodExist = this.listprodFiltrExist.filter(value => value.uid_user==this.id && value.estado==true && value.estadoP==true )
       }
     )
   }
@@ -200,7 +199,7 @@ prepedidos
             ...item.payload.val()
           }
         })
-        this.filtrprodsCategorySlectedExist = this.CategorySlectedFiltrExist.filter(value => value.empresa_proveedor === this.nom_empresa && value.categoria_producto === this.nombre_categoria)
+        this.filtrprodsCategorySlectedExist = this.CategorySlectedFiltrExist.filter(value => value.uid_user === this.id && value.categoria_producto === this.nombre_categoria)
       }
     )    
   } 
@@ -225,15 +224,16 @@ prepedidos
             ...item.payload.val()
           }
         })
-        this.filtrprodsCategoryExist = this.prodsCategoryFiltrExist.filter(value => (value.empresa_proveedor === this.nom_empresa && value.categoria_producto ===  nombre))
+        this.filtrprodsCategoryExist = this.prodsCategoryFiltrExist.filter(value => (value.uid_user === this.id && value.categoria_producto ===  nombre && value.estado==true && value.estadoP==true))
       }
     )
+    console.log(this.filtrprodsCategoryExist,'holle')
   }
 
   showCategorias(){
     this.prodServ.getProduct().subscribe(data => {
       data.map((item) => {
-        if(this.nom_empresa === item.empresa_proveedor){
+        if(this.nom_empresa === item.empresa_proveedor && item.estado==true && item.estadoP==true ){
           //console.log("nueva lista de categorias: "+item.categoria_producto)
           
           this.categoria.push({

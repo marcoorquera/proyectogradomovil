@@ -67,7 +67,10 @@ export class ProductoService {
     
     })
   }
+  pedidoExiste
   addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number, precio_unit:number){
+    
+    
     const prepedido = this.afs.database.ref('/prepedido/'+id_usuario+"/")
     const id_prepedido = prepedido.push().key
   
@@ -85,6 +88,25 @@ export class ProductoService {
       prepedido:1,
       precio_unit:precio_unit
     })   
+    console.log('ids',id_usuario,id)
+
+    // this.obtenerPrepedidos(id_usuario).subscribe((list) => {
+    //   this.vendedores = list.map((item) => {
+    //     return {
+    //       $key: item.key,
+    //       ...item.payload.val(),
+    //     };
+    //   });
+
+    //   this.vendedores = this.vendedores.filter(
+    //     (value) => value.nombre_empresa == item.empresa_pedido
+    //   );
+
+    // this.afs.object('/prepedido/'+id_usuario+"/").valueChanges().subscribe(data=>{
+    //   this.pedidoExiste=data
+    //   this.pedidoExiste
+    //   console.log('data',this.pedidoExiste)
+    // })
     /*
       this.prepedidoList = this.afs.list('/prepedido/')    
     this.prepedidoList.snapshotChanges().pipe(
@@ -171,6 +193,7 @@ export class ProductoService {
   
   }
 
+  
   getPedidos(){
     this.pedidoList = this.afs.list('/pedidos/')
     return this.pedidoList.snapshotChanges().pipe(

@@ -1,9 +1,9 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 
-import { MenuController, NavController } from '@ionic/angular';
+import { IonRouterOutlet, MenuController, NavController } from '@ionic/angular';
 import { ProductoService } from 'src/app/services/producto.service';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 import { ProductInfoPage } from '../product-info/product-info.page';
@@ -12,6 +12,8 @@ import { ModalCategoriaPage } from '../modal-categoria/modal-categoria.page';
 import { ModalSearchPage } from '../modal-search/modal-search.page';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { PedidosListPage } from '../pedidos-list/pedidos-list.page';
+import { Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -19,50 +21,54 @@ import { PedidosListPage } from '../pedidos-list/pedidos-list.page';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
+  @ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
   productos = [];
-  vendedores= []
-  name_prod : string;
-  
-  
+  vendedores = [];
+  name_prod: string;
 
   textoBuscar = '';
   listadoProducto: unknown[];
   constructor(
     private afAuth: AngularFireAuth,
-    private menu:  MenuController,
+    private menu: MenuController,
     private prodService: ProductoService,
-    private modalCtrl: ModalController,private navCtrl: NavController,
-    private afs: AngularFireDatabase, private navCtr: NavController,
-    private vendedorService: VendedorService,  private auth: AngularFireAuth
-  ) { }
+    private modalCtrl: ModalController,
+    private navCtrl: NavController,
+    private afs: AngularFireDatabase,
+    private navCtr: NavController,
+    private vendedorService: VendedorService,
+    private auth: AngularFireAuth,
+    private plataform: Platform,
+    private location: Location,
+    public alertController: AlertController,
+    public prodServ: ProductoService
+  ) {
+    this.backEvent();
+  }
 
   ngOnInit() {
     //this.getProducto()
-    this.auth.onAuthStateChanged(user => { 
-      if(user){
-        this.getEmpresa()
-        this.getCategoria()
-        this.getPrepedidos()
-
-      }else{
-      
-        this.navCtrl.navigateBack('/login')
-        }
-    
-    })
-        
-    
+    this.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.getEmpresa();
+        this.getCategoria();
+        this.getPrepedidos();
+      } else {
+        this.navCtrl.navigateBack('/login');
+      }
+    });
   }
-  resCategorias
-  getCategoria(){
-    this.afs.list("categoria/").valueChanges().subscribe(data=>{
-      this.resCategorias=data
-    })
-
+  resCategorias;
+  getCategoria() {
+    this.afs
+      .list('categoria/')
+      .valueChanges()
+      .subscribe((data) => {
+        this.resCategorias = data;
+      });
   }
 
-  async getPrepedidos(){
+  async getPrepedidos() {
     this.auth.onAuthStateChanged((user) => {
       this.afs
         .list('prepedido/' + user.uid + '/')
@@ -78,43 +84,38 @@ export class HomePage implements OnInit {
           }
         });
     });
-
   }
 
-
-  private zone: NgZone
-  buscar(event: CustomEvent){    
+  private zone: NgZone;
+  buscar(event: CustomEvent) {
     this.textoBuscar = event.detail.value;
     //console.log("busqueda: "+this.textoBuscar)
   }
-  getEmpresa(){
+  getEmpresa() {
+    this.auth.onAuthStateChanged((user) => {
+      if (user != null) {
+        this.vendedorService.getVendedor().subscribe((list) => {
+          this.vendedores = list.map((item) => {
+            return {
+              $key: item.key,
+              ...item.payload.val(),
+            };
+          });
 
-    this.auth.onAuthStateChanged(user => { 
-      if(user!=null){
-    this.vendedorService.getVendedor().subscribe(
-      list => {
-        this.vendedores = list.map(item => {
-          return {
-            $key: item.key,
-            ...item.payload.val()
-          }
-        })
-         
-        this.vendedores=this.vendedores.filter(value => value.estado == true)
-        this.vendedores.map(item => {
-          item.nombre_empresa
-          item.image_vendedor
-          item.direccion_vendedor
-          item.telefono_vendedor
-          item.uid_vendedor
-          //console.log("nombre: "+item.nombre_empresa)
-        })
+          this.vendedores = this.vendedores.filter(
+            (value) => value.estado == true
+          );
+          this.vendedores.map((item) => {
+            item.nombre_empresa;
+            item.image_vendedor;
+            item.direccion_vendedor;
+            item.telefono_vendedor;
+            item.uid_vendedor;
+            //console.log("nombre: "+item.nombre_empresa)
+          });
+        });
       }
-    )
-
-    }
-
-    })
+    });
   }
 
   /*
@@ -141,28 +142,25 @@ export class HomePage implements OnInit {
 
   */
 
-  toggleMenu(){
-    this.menu.toggle()
+  toggleMenu() {
+    this.menu.toggle();
   }
 
-  async modalSearch(){
+  async modalSearch() {
     const modal = await this.modalCtrl.create({
       component: ModalSearchPage,
-                
-    })
+    });
     return await modal.present();
   }
 
-  async showCategoria(nombre){
+  async showCategoria(nombre) {
     //console.log("categorias: "+nombre)
     const modal = await this.modalCtrl.create({
       component: ModalCategoriaPage,
       componentProps: {
-        categoria: nombre
-      }
-      
-      
-    })
+        categoria: nombre,
+      },
+    });
     return await modal.present();
   }
   async goToPedidoList() {
@@ -173,44 +171,52 @@ export class HomePage implements OnInit {
     await modal.present();
   }
 
-  
-  async showDetails(id_empresa, image_empresa, nombre_empresa){
+  async showDetails(id_empresa, image_empresa, nombre_empresa) {
     const modal = await this.modalCtrl.create({
       component: ProductInfoPage,
       componentProps: {
         id: id_empresa,
         img_empresa: image_empresa,
-        nom_empresa: nombre_empresa
-        
-      }
-    })
+        nom_empresa: nombre_empresa,
+      },
+    });
     return await modal.present();
   }
 
-  /*
-    async showDetails(id_prod,nombre_producto,descripcion_producto, 
-                    image_producto, precio_producto, cantidad_producto, 
-                    empresa_producto,nombre_proveedor, apellido_proveedor){
-
-    const modal = await this.modalCtrl.create({
-      component: ProductInfoPage,
-      componentProps: {
-        id_producto: id_prod,
-        
-        name_prod: nombre_producto,
-        descripcion_prod: descripcion_producto,
-        image_prod: image_producto,
-        precio_prod: precio_producto,
-        cantidad_prod: cantidad_producto,
-        empresa_prov: empresa_producto,
-        nombre_prov: nombre_proveedor,
-        apellido_prov: apellido_proveedor
+  backEvent() {
+    this.plataform.backButton.subscribeWithPriority(10, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        this.backAlert();
+      } else {
+        this.location.back();
       }
-    })
-    return await modal.present();
+    });
   }
-  */
 
-  
-  
+  async backAlert() {
+    const alert = await this.alertController.create({
+      animated: true,
+      cssClass: 'alert',
+      header: '¿Seguro que desea salir?',
+      message: 'Al salir se cerrará su cuenta',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Close App',
+          handler: () => {
+            this.auth.onAuthStateChanged((user) => {
+              this.prodServ.deleteprepedidos(user.uid);
+            });
+            navigator['app'].exitApp();
+            this.modalCtrl.dismiss();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
 }
