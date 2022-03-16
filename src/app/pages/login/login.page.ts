@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from '../../services/auth.service';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -35,6 +35,7 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,private alertCtroller: AlertController,
     private auth: AngularFireAuth,
     public prodServ: ProductoService,
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -75,6 +76,7 @@ export class LoginPage implements OnInit {
             this.auth.onAuthStateChanged((user) => {
               this.prodServ.deleteprepedidos(user.uid);
             });
+            this.modalCtrl.dismiss();
           }else{
             this.navCtrl.navigateForward('/register');
           }

@@ -171,6 +171,7 @@ export class PedidosListPage implements OnInit {
       cantidad = 1
     }
     subtotal_res = Math.round((precio_unit * cantidad)*100)/100 ; 
+    this.sub_TotalFinal = subtotal_res;
     console.log('cantidad',subtotal_res)
 
      this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
@@ -185,7 +186,7 @@ export class PedidosListPage implements OnInit {
       subtotal: subtotal_res,
     });
     this.pedidos = [];
-    this.sub_TotalFinal = null;
+    //this.sub_TotalFinal = null;
   }
 
   datos;
