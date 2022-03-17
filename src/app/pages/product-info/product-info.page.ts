@@ -27,6 +27,7 @@ export class ProductInfoPage implements OnInit {
   prepedidoIsEmpty: boolean = true;
 
   textoBuscarProd='';
+  uid_user
 
  
 
@@ -85,12 +86,17 @@ export class ProductInfoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getListProd();
+    this.auth.onAuthStateChanged(user => {
+     this.uid_user=user.uid
+     
+     this.getListProd();
     this.showCategorias();
     this.CategorySelected();
     this.showPrepedidos()
     this.showProducts()
     this.productsFilterArray()
+   })
+    
     
     //this.prepedidosExist()
     // console.log("id ",this.id)
@@ -98,21 +104,21 @@ export class ProductInfoPage implements OnInit {
     
     // console.log("product-info NombreEmpresa ",this.nom_empresa)
   }
-prepedidos
-  prepedidosExist(){
+// prepedidos
+//   prepedidosExist(){
    
-    this.auth.onAuthStateChanged(user => {
-       this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
-          this.prepedidos=data
+//     //this.auth.onAuthStateChanged(user => {
+//        this.afs.list('prepedido/'+this.uid_user+"/").valueChanges().subscribe(data=>{
+//           this.prepedidos=data
          
-          console.log("verificando si exite prepedidos",this.prepedidos.length)
-      })
+//           console.log("verificando si exite prepedidos",this.prepedidos.length)
+//       })
       
       
-    })
+//     //})
     
       
-  }
+//   }
 
   
   productsFilterArray(){
@@ -153,14 +159,13 @@ prepedidos
     )
   }
 
-  datos
-  showPrepedidos(){
-    this.auth.onAuthStateChanged(user => {
-      this.afs.list('prepedido/'+user.uid+"/").valueChanges().subscribe(data=>{
+  prepedidos
+  async showPrepedidos(){
+    //this.auth.onAuthStateChanged(user => {
+      this.afs.list('prepedido/'+this.uid_user+"/").valueChanges().subscribe(data=>{
 
-        this.datos=data
-        console.log("el valor de lso datos son ",this.datos)
-        if(this.datos.length==0){
+        this.prepedidos=data
+        if(this.prepedidos.length==0){
           
           this.prepedidoIsEmpty = true;
         }else{
@@ -169,7 +174,7 @@ prepedidos
       })
          
      
-    })    
+   // })    
   }
   
   async goToPedidoList(){
@@ -227,7 +232,6 @@ prepedidos
         this.filtrprodsCategoryExist = this.prodsCategoryFiltrExist.filter(value => (value.uid_user === this.id && value.categoria_producto ===  nombre && value.estado==true && value.estadoP==true))
       }
     )
-    console.log(this.filtrprodsCategoryExist,'holle')
   }
 
   showCategorias(){
@@ -251,25 +255,68 @@ prepedidos
 
   async modalPedido(nombre_empresa, id_prod, nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto,image_producto){
     
-    console.log("Entrando modalPedido")
-    const modal = await this.modalCtrl.create({
-      component: ModalPedidoPage,
-      componentProps: {
-        id: id_prod,
-        nombre: nombre_producto,
-        proveedor: nombre_proveedor,
-        descripcion: descripcion_producto,
-        categoria_prod: categoria_producto,
-        cantidad: cantidad_producto,
-        precio: precio_producto, 
-        nombre_empresa: nombre_empresa,
-        image: image_producto
-      }
-    })
+    this.auth.onAuthStateChanged(async (user) => {
+      
+       await this.afs
+        .list('prepedido/' + user.uid + '/')
+        .valueChanges()
+        .subscribe((data) => {
+
+          this.prepedidos=data
+          
+        });
+        
+        for (var i = 0; i < this.prepedidos.length; i++) {
+
+          if(this.prepedidos[i].id_prod==id_prod){
+            this.productosRepetidos()
+          break;
+        
+        }
+        }
+
+    });
+        const modal = await this.modalCtrl.create({
+          component: ModalPedidoPage,
+          componentProps: {
+            id: id_prod,
+            nombre: nombre_producto,
+            proveedor: nombre_proveedor,
+            descripcion: descripcion_producto,
+            categoria_prod: categoria_producto,
+            cantidad: cantidad_producto,
+            precio: precio_producto, 
+            nombre_empresa: nombre_empresa,
+            image: image_producto
+          }
+        })
+        
+        return await modal.present(); 
     
-    return await modal.present();
   }
-  
+
+  async productosRepetidos() {
+    const alert = await this.alertController.create({
+      header: 'Ya en tu Lista',
+      subHeader: 'Lo sentimos',
+      message: 'Este producto ya lo tienes en tu lista.',
+      
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'ok',
+
+          handler: () => {
+            this.modalCtrl.dismiss();
+          },
+        },
+      ],
+      backdropDismiss: false
+      
+    });
+
+    await alert.present();
+  }
   getListProd(){
     this.prodServ.getProduct().subscribe(data => {
       data.map((item) => {

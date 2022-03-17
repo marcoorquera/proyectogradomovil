@@ -76,7 +76,6 @@ export class LoginPage implements OnInit {
             this.auth.onAuthStateChanged((user) => {
               this.prodServ.deleteprepedidos(user.uid);
             });
-            this.modalCtrl.dismiss();
           }else{
             this.navCtrl.navigateForward('/register');
           }

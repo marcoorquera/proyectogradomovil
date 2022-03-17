@@ -83,7 +83,30 @@ export class ModalCategoriaPage implements OnInit {
     id_prod,
     image_empresa
   ) {
-
+    this.auth.onAuthStateChanged((user) => {
+      this.afs
+        .list('prepedido/' + user.uid + '/')
+        .valueChanges()
+        .subscribe((data) => {
+          this.prepedidos = data;
+          
+          // this.prepedidos=this.prepedidos.filter((value)=>value.id_prod==id_prod).map((item=>{
+            
+            
+          // }))
+          
+        });
+        
+        for (var i = 0; i < this.prepedidos.length; i++) {
+          if(this.prepedidos[i].id_prod==id_prod){
+            this.productosRepetidos()
+          break;
+        
+        }
+        }
+        console.log(this.prepedidos,'prepedidos')
+        //console.log(this.prepedidos.id_prod,'prepedidos')
+    });
     this.empresa_producto = empresa_proveedor;
     this.image_empresa = image_empresa;
     const modal = await this.modalCtrl.create({
@@ -101,11 +124,32 @@ export class ModalCategoriaPage implements OnInit {
         categoria_prod: categoria_producto,
       },
     });
-    this.prepedidosExist();
+    //this.prepedidosExist();
     return await modal.present();
   }
-
   prepedidos;
+  async productosRepetidos() {
+    const alert = await this.alertController.create({
+      header: 'Ya en tu Lista',
+      subHeader: 'Lo sentimos',
+      message: 'Este producto ya lo tienes en tu lista.',
+      
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'ok',
+
+          handler: () => {
+            this.modalCtrl.dismiss();
+          },
+        },
+      ],
+      backdropDismiss: false
+      
+    });
+
+    await alert.present();
+  }
   async prepedidosExist() {
     this.auth.onAuthStateChanged((user) => {
       this.afs

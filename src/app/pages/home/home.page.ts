@@ -77,7 +77,6 @@ export class HomePage implements OnInit {
           this.listadoProducto = data;
           // console.log('el valor de lso datos son ', this.listadoProducto);
           if (this.listadoProducto.length == 0) {
-            this.modalCtrl.dismiss();
             document.getElementById('boton_pedido').style.display = 'none';
           } else {
             document.getElementById('boton_pedido').style.display = 'block';
@@ -170,7 +169,6 @@ export class HomePage implements OnInit {
     });
     await modal.present();
   }
-
   async showDetails(id_empresa, image_empresa, nombre_empresa) {
     const modal = await this.modalCtrl.create({
       component: ProductInfoPage,

@@ -171,7 +171,7 @@ export class PedidosListPage implements OnInit {
       cantidad = 1
     }
     subtotal_res = Math.round((precio_unit * cantidad)*100)/100 ; 
-    this.sub_TotalFinal = subtotal_res;
+    //this.sub_TotalFinal = subtotal_res;
     console.log('cantidad',subtotal_res)
 
      this.afs.database.ref('/prepedido/' + id_usuario + '/' + id).update({
@@ -194,12 +194,12 @@ export class PedidosListPage implements OnInit {
   id_prepedido;
   savePedidos() {
 
-    this.auth.onAuthStateChanged((user) => {
+    //this.auth.onAuthStateChanged((user) => {
       for (const i in this.pprepedidos) {
         console.log('estoy en el sabePedidos', this.pprepedidos[i]);
         ///probar aqui
         this.afs.database
-          .ref('/prepedido/' + user.uid + '/' + this.pprepedidos[i])
+          .ref('/prepedido/' +this.user_id + '/' + this.pprepedidos[i])
           .update({
             prepedido: 0,
           });
@@ -207,7 +207,7 @@ export class PedidosListPage implements OnInit {
       }
 
       this.pedidoGuardado();
-    });
+   // });
   }
 
   pprepedidos = [];
