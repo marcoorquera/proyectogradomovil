@@ -235,6 +235,22 @@ export class PedidosListPage implements OnInit {
               this.imagen_empresa,
               this.id_prepedido
             );
+
+            
+            this.productService.addPedidos(
+              valores.id_usuario,
+              valores.id_prepedido,
+              valores.nombre_pedido,
+              valores.subtotal,
+              valores.categoria_pedido,
+              valores.cantidad_pedido,
+              valores.empresa,
+              valores.imagen_pedido,
+              valores.id_prod,
+              valores.subtotal,
+              this.imagen_empresa,
+              this.id_prepedido
+            );
             this.deletePrepedidos(user.uid, valores.id_prepedido);
           }
 

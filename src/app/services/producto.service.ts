@@ -67,6 +67,28 @@ export class ProductoService {
     
     })
   }
+
+
+  addPedidos(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido){
+    
+    var dta=Date.now()
+    this.afs.object('/pedidos/'+id_pedido).update({
+      id_pedido: id_prepedido,
+      id_usuario: id_usuario,
+      nombre_pedido: nombre,
+      precio_pedido: precio,
+      categoria_pedido: categoria,
+      cantidad_pedido: cantidad,
+      empresa_pedido: empresa,
+      imagen_pedido: imagen,
+      id_prod: id_prod,
+      subtotal: subtotal,
+      imagen_empresa: imagen_empresa,
+      fecha_pedido: ("0" + new Date(dta).getDate()).slice(-2) + '/' + (("0" + (new Date(dta).getMonth() + 1)).slice(-2)
+      ) + '/' + new Date(dta).getFullYear()+' '+ (new Date(dta).getHours()< 10 ? "0" + new Date(dta).getHours() : +new Date(dta).getHours())+':'+(new Date(dta).getMinutes()< 10 ? "0" + new Date(dta).getMinutes() : +new Date(dta).getMinutes())+':'+(new Date(dta).getSeconds()< 10 ? "0" + new Date(dta).getSeconds() : +new Date(dta).getSeconds())
+    
+    })
+  }
   pedidoExiste
   addeditPedidos(id_usuario: string,nombre_empresa: string, id: string, categoria: string, nombre: string, precio: number, cantidad: number, imagen: string, subtotal: number, precio_unit:number){
     
@@ -151,20 +173,20 @@ export class ProductoService {
     
   }
 
-  addPedidos(nombre_pedido: string, cantidad_pedido: number, precio_pedido: number, imagen_pedido: string, empresa: string){
-    console.log("anadiendo a prepedidos")
-    const pedido = this.afs.database.ref('/pedidos/')
-    const id_pedido = pedido.push().key
-    this.afs.object('/pedidos/'+id_pedido).update({
-      id_pedido: id_pedido,
-      nombre_pedido: nombre_pedido,
-      cantidad_pedido: cantidad_pedido,
-      precio_pedido: precio_pedido,
-      imagen_pedido: imagen_pedido,
-      empresa: empresa
-    })
+  // addPedidos(nombre_pedido: string, cantidad_pedido: number, precio_pedido: number, imagen_pedido: string, empresa: string){
+  //   console.log("anadiendo a prepedidos")
+  //   const pedido = this.afs.database.ref('/pedidos/')
+  //   const id_pedido = pedido.push().key
+  //   this.afs.object('/pedidos/'+id_pedido).update({
+  //     id_pedido: id_pedido,
+  //     nombre_pedido: nombre_pedido,
+  //     cantidad_pedido: cantidad_pedido,
+  //     precio_pedido: precio_pedido,
+  //     imagen_pedido: imagen_pedido,
+  //     empresa: empresa
+  //   })
     
-  }
+  // }
 
   geteditPedidos(){
     this.prepedidoList = this.afs.list('/prepedido/')
