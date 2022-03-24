@@ -62,6 +62,7 @@ export class PedidosListPage implements OnInit {
       this.showProfile(user.uid)
       this.showPrepedidos();
       this.guardarPedidos();
+      
     });
 
   }
@@ -210,29 +211,6 @@ export class PedidosListPage implements OnInit {
       this.pedidoGuardado();
    // });
   }
-  nombre
-  apellido
-  email
-  telefono
-  img
-  user
-
-  showProfile(uid){
-    
-    this.afs.list('usuario/'+uid).valueChanges().subscribe(_data => {
-      this.user = _data
-      this.nombre = this.user[3];
-      this.apellido = this.user[0];
-      this.email = this.user[1];
-      this.telefono = this.user[4];
-      this.img = this.user[2]
-      console.log('nombre: '+this.nombre)
-      console.log('apellido: '+this.apellido)      
-      console.log('email: '+this.email)
-      console.log('telefono: '+this.telefono)
-    })
-  }
-
 
   pprepedidos = [];
   async guardarPedidos() {
@@ -257,12 +235,7 @@ export class PedidosListPage implements OnInit {
               valores.id_prod,
               valores.subtotal,
               this.imagen_empresa,
-              this.id_prepedido,
-              this.nombre,
-              this.apellido,
-              this.telefono,
-              this.email,
-              this.img
+              this.id_prepedido
             );
 
             
@@ -281,8 +254,8 @@ export class PedidosListPage implements OnInit {
               this.id_prepedido,
               this.nombre,
               this.apellido,
-              this.telefono,
               this.email,
+              this.telefono,
               this.img
             );
             this.deletePrepedidos(user.uid, valores.id_prepedido);
@@ -353,5 +326,22 @@ export class PedidosListPage implements OnInit {
 
   goToPedidos() {
     this.navCtrl.navigateForward('/menu/pedido');
+  }
+  user_profile
+  nombre
+  apellido
+  email
+  telefono
+  img
+  showProfile(uid){
+    
+    this.afs.list('usuario/'+uid).valueChanges().subscribe(_data => {
+      this.user_profile = _data
+      this.nombre = this.user_profile[3];
+      this.apellido = this.user_profile[0];
+      this.email = this.user_profile[1];
+      this.telefono = this.user_profile[4];
+      this.img = this.user_profile[2]
+    })
   }
 }
