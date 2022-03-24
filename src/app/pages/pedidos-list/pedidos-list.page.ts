@@ -59,6 +59,7 @@ export class PedidosListPage implements OnInit {
   ngOnInit() {
     this.auth.onAuthStateChanged((user) => {
       this.user_id = user.uid;
+      this.showProfile(user.uid)
       this.showPrepedidos();
       this.guardarPedidos();
     });
@@ -209,6 +210,29 @@ export class PedidosListPage implements OnInit {
       this.pedidoGuardado();
    // });
   }
+  nombre
+  apellido
+  email
+  telefono
+  img
+  user
+
+  showProfile(uid){
+    
+    this.afs.list('usuario/'+uid).valueChanges().subscribe(_data => {
+      this.user = _data
+      this.nombre = this.user[3];
+      this.apellido = this.user[0];
+      this.email = this.user[1];
+      this.telefono = this.user[4];
+      this.img = this.user[2]
+      console.log('nombre: '+this.nombre)
+      console.log('apellido: '+this.apellido)      
+      console.log('email: '+this.email)
+      console.log('telefono: '+this.telefono)
+    })
+  }
+
 
   pprepedidos = [];
   async guardarPedidos() {
@@ -233,7 +257,12 @@ export class PedidosListPage implements OnInit {
               valores.id_prod,
               valores.subtotal,
               this.imagen_empresa,
-              this.id_prepedido
+              this.id_prepedido,
+              this.nombre,
+              this.apellido,
+              this.telefono,
+              this.email,
+              this.img
             );
 
             
@@ -249,7 +278,12 @@ export class PedidosListPage implements OnInit {
               valores.id_prod,
               valores.subtotal,
               this.imagen_empresa,
-              this.id_prepedido
+              this.id_prepedido,
+              this.nombre,
+              this.apellido,
+              this.telefono,
+              this.email,
+              this.img
             );
             this.deletePrepedidos(user.uid, valores.id_prepedido);
           }

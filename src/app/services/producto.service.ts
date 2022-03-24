@@ -46,7 +46,7 @@ export class ProductoService {
   
 
     
-  addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido){
+  addPedidoFinal(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido,nombre_user,apellido_user,telefono_user,email_user,img_user){
     const pedido = this.afs.database.ref('/pedido_final/'+id_usuario+"/")
     const id_pedido_generate = pedido.push().key
     var dta=Date.now()
@@ -69,7 +69,7 @@ export class ProductoService {
   }
 
 
-  addPedidos(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido){
+  addPedidos(id_usuario: string, id_pedido,nombre: string, precio: number, categoria: string, cantidad: number, empresa: string, imagen: string, id_prod: string, subtotal: number, imagen_empresa, id_prepedido, nombre_user,apellido_user,telefono_user,email_user,img_user){
     
     var dta=Date.now()
     this.afs.object('/pedidos/'+id_pedido).update({
@@ -85,8 +85,12 @@ export class ProductoService {
       subtotal: subtotal,
       imagen_empresa: imagen_empresa,
       fecha_pedido: ("0" + new Date(dta).getDate()).slice(-2) + '/' + (("0" + (new Date(dta).getMonth() + 1)).slice(-2)
-      ) + '/' + new Date(dta).getFullYear()+' '+ (new Date(dta).getHours()< 10 ? "0" + new Date(dta).getHours() : +new Date(dta).getHours())+':'+(new Date(dta).getMinutes()< 10 ? "0" + new Date(dta).getMinutes() : +new Date(dta).getMinutes())+':'+(new Date(dta).getSeconds()< 10 ? "0" + new Date(dta).getSeconds() : +new Date(dta).getSeconds())
-    
+      ) + '/' + new Date(dta).getFullYear()+' '+ (new Date(dta).getHours()< 10 ? "0" + new Date(dta).getHours() : +new Date(dta).getHours())+':'+(new Date(dta).getMinutes()< 10 ? "0" + new Date(dta).getMinutes() : +new Date(dta).getMinutes())+':'+(new Date(dta).getSeconds()< 10 ? "0" + new Date(dta).getSeconds() : +new Date(dta).getSeconds()),
+      nombre_user: nombre_user,
+      apellido_user:apellido_user,
+      telefono_user:telefono_user,
+      email_user:email_user,
+      imagen_user:img_user
     })
   }
   pedidoExiste
