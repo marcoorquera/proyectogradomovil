@@ -48,6 +48,7 @@ export class ProductInfoPage implements OnInit {
   @Input() id;
   @Input() img_empresa;
   @Input() nom_empresa;
+  
 
   //categorias
   @Input() nombre_categoria;
@@ -253,7 +254,7 @@ export class ProductInfoPage implements OnInit {
   }
 
 
-  async modalPedido(nombre_empresa, id_prod, nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto,image_producto){
+  async modalPedido(nombre_empresa, id_prod, nombre_producto,nombre_proveedor, descripcion_producto, categoria_producto, cantidad_producto, precio_producto,image_producto,url3D){
     
     this.auth.onAuthStateChanged(async (user) => {
       
@@ -287,7 +288,8 @@ export class ProductInfoPage implements OnInit {
             cantidad: cantidad_producto,
             precio: precio_producto, 
             nombre_empresa: nombre_empresa,
-            image: image_producto
+            image: image_producto,
+            url3D:url3D
           }
         })
         

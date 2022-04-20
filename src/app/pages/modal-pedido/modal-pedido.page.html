@@ -37,7 +37,25 @@
         </ion-button>
       </div>
     </div>
+
+    <div class="div5">
+
+      <ion-button expand="full"   *ngIf="!s1" disabled={{s}} (click)="estadoButon()" href={{url3D}}  shape="round"> 
+        Descargar 3D
+      </ion-button>
+
+      <ion-button  expand="full"  *ngIf="s1"  shape="round"   href="https://php.sebastianwonder.repl.co/" target="_blank">    
+        Ver en 3D
+      </ion-button>
+    
+     
+      
+     
+    </div>
+
   </div>
+
+  
   <div style="width:100%; margin-left: auto; margin-right: auto; position: absolute; bottom: 20px;">
     <ion-button (click)="contactoEmpresa(user_id, nombre, total_prod, pedido, image, total_prod)"  shape="round" expand="full" size="large">
       <p>Agregar a mi pedido {{total_prod}}$</p>

@@ -81,7 +81,7 @@ export class ModalCategoriaPage implements OnInit {
     image_producto,
     empresa_proveedor,
     id_prod,
-    image_empresa
+    image_empresa,url3D
   ) {
     this.auth.onAuthStateChanged((user) => {
       this.afs
@@ -122,6 +122,7 @@ export class ModalCategoriaPage implements OnInit {
         nombre_empresa: empresa_proveedor,
         id: id_prod,
         categoria_prod: categoria_producto,
+        url3D:url3D
       },
     });
     //this.prepedidosExist();

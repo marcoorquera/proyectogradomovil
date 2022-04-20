@@ -142,7 +142,7 @@ export class ModalSearchPage implements OnInit {
     image_producto,
     empresa_proveedor,
     id_prod,
-    image_empresa
+    image_empresa,url3D
   ) {
 
     this.auth.onAuthStateChanged((user) => {
@@ -167,6 +167,7 @@ export class ModalSearchPage implements OnInit {
         }
         }
         console.log(this.prepedidos,'prepedidos')
+       
         //console.log(this.prepedidos.id_prod,'prepedidos')
     });
     this.empresa_producto = empresa_proveedor;
@@ -184,6 +185,7 @@ export class ModalSearchPage implements OnInit {
         nombre_empresa: empresa_proveedor,
         id: id_prod,
         categoria_prod: categoria_producto,
+        url3D:url3D
       },
     });
     //this.prepedidosExist();

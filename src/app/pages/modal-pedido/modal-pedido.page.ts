@@ -23,6 +23,7 @@ export class ModalPedidoPage implements OnInit {
   @Input() image;
   @Input() id;
   @Input() nombre_empresa;
+  @Input() url3D;
 
   isDisabled = false;
   isDisabled_resta = false;
@@ -45,8 +46,17 @@ export class ModalPedidoPage implements OnInit {
     this.auth.onAuthStateChanged((user) => {
       this.user_id = user.uid;
       this.total_prod = Math.round(this.pedido * this.precio * 100) / 100;
-      console.log('modal pedidos nombre empresa', this.nombre_empresa);
+      console.log('modal pedidos nombre empresa', this.nombre_empresa,this.url3D);
+      if(this.url3D=="#" || this.url3D=="" ||  this.url3D==undefined){
+      this.s="true"
+      }
+      else{
+        this.s="false"
+
+      }
     });
+
+
   }
 
   suma() {
@@ -125,6 +135,13 @@ export class ModalPedidoPage implements OnInit {
 
   exit() {
     this.modalCrtl.dismiss();
+  }
+
+s1
+s
+  estadoButon(){
+    
+    this.s1 = true;
   }
 
 }

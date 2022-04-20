@@ -54,7 +54,7 @@
       
       <div [hidden]="categoriaFiltered" id="element" class="main2" *ngFor="let p of filtrprodsCategorySlectedExist | filtroProd: textoBuscarProd">
       
-        <div (click)="modalPedido(p.empresa_proveedor, p.id_prod, p.nombre_producto, p.empresa_proveedor, p.descripcion_producto, p.categoria_producto, p.cantidad_producto, p.precio_producto, p.image_producto)" class="card_prod">
+        <div (click)="modalPedido(p.empresa_proveedor, p.id_prod, p.nombre_producto, p.empresa_proveedor, p.descripcion_producto, p.categoria_producto, p.cantidad_producto, p.precio_producto, p.image_producto,p.url3D)" class="card_prod">
           <div class="div1">
             <p style="color: #3880ff"><b>{{p.nombre_producto}}</b></p>
           </div>
@@ -79,7 +79,7 @@
     
       
       <div [hidden]="mainProds" class="main" *ngFor="let prod of filtrlistprodExist | filtroProd: textoBuscarProd">
-        <div (click)="modalPedido(prod.empresa_proveedor, prod.id_prod, prod.nombre_producto, prod.empresa_proveedor, prod.descripcion_producto, prod.categoria_producto, prod.cantidad_producto, prod.precio_producto, prod.image_producto)" class="card_prod">
+        <div (click)="modalPedido(prod.empresa_proveedor, prod.id_prod, prod.nombre_producto, prod.empresa_proveedor, prod.descripcion_producto, prod.categoria_producto, prod.cantidad_producto, prod.precio_producto, prod.image_producto,prod.url3D)" class="card_prod">
           <div class="div1">
             <p style="color: #3880ff"><b>{{prod.nombre_producto}}</b></p>
           </div>
@@ -101,7 +101,7 @@
         </div>  
       </div>
       <div [hidden]="selection" class="main" *ngFor="let producto of filtrprodsCategoryExist | filtroProd: textoBuscarProd">
-        <div (click)="modalPedido(producto.empresa_proveedor, producto.id_prod, producto.nombre_producto, producto.empresa_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.image_producto)" class="card_prod">
+        <div (click)="modalPedido(producto.empresa_proveedor, producto.id_prod, producto.nombre_producto, producto.empresa_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.image_producto,producto.url3D)" class="card_prod">
           <div class="div1">
             <p style="color: #3880ff"><b>{{producto.nombre_producto}}   </b></p>
           </div>
