@@ -40,11 +40,15 @@
 
     <div class="div5">
 
-      <ion-button expand="full"   *ngIf="!s1" disabled={{s}} (click)="estadoButon()" href={{url3D}}  shape="round"> 
+      <!-- <ion-button expand="full"   *ngIf="!s1" disabled={{s}} (click)="estadoButon()" href={{url3D}}  shape="round"> 
         Descargar 3D
       </ion-button>
 
       <ion-button  expand="full"  *ngIf="s1"  shape="round"   href="https://php.sebastianwonder.repl.co/" target="_blank">    
+        Ver en 3D
+      </ion-button> -->
+
+      <ion-button expand="full"   *ngIf="!s1" disabled={{s}} (click)="abrir()" href={{url3D}}  shape="round"> 
         Ver en 3D
       </ion-button>
     

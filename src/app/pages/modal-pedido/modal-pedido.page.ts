@@ -144,4 +144,8 @@ s
     this.s1 = true;
   }
 
+  abrir(){
+    window.open('https://php.sebastianwonder.repl.co/', '_blank'); //Abre la URL en el navegador de InAppBrowser
+  }
+
 }
