@@ -1,24 +1,24 @@
 <ion-header>
   <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-menu-button (click)="toggleMenu()">
-          </ion-menu-button>
-      </ion-buttons>      
+    <ion-buttons slot="start">
+      <ion-menu-button (click)="toggleMenu()">
+      </ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <div (click)="modalSearch()" class="searchbar">
-    <ion-searchbar  disabled="true" animated (ionChange)="buscar( $event )"
-    ></ion-searchbar>
+    <ion-searchbar placeholder="Buscar" disabled="true" animated (ionChange)="buscar( $event )"></ion-searchbar>
+    <!-- <ion-icon slot="start" name="search-outline"></ion-icon> -->
   </div>
   <div class="title">
-    <ion-text style="color:#2C33FF;">
-      <h2>Categorias</h2>
+    <ion-text style="color:#000000;">
+      <h2><b>Categorias</b></h2>
     </ion-text>
   </div>
-  <div style="width: 95%; margin-left: auto; margin-right: auto;" class="categoria">
-    
+  <div style="width: 100%; margin-left: auto; margin-right: auto;" class="categoria">
+
     <!--
       <ion-grid>
       <ion-row size="1">
@@ -58,13 +58,13 @@
     -->
     <div class="ruleta">
       <ion-segment style="--overflow: hidden;" scrollable>
-        
-          <ion-col *ngFor="let c of resCategorias">
-            <div (click)="showCategoria(c.nombre_categoria)" class="sub_categoria">
-              <h3>{{c.nombre_categoria}}</h3> 
-            </div>
-          </ion-col>
-        
+
+        <ion-col *ngFor="let c of resCategorias">
+          <div (click)="showCategoria(c.nombre_categoria)" class="sub_categoria">
+            <h3>{{c.nombre_categoria}}</h3>
+          </div>
+        </ion-col>
+
         <!-- <ion-col>
           <div (click)="showCategoria('silla')" class="sub_categoria">
             <h3>Sillas</h3> 
@@ -80,21 +80,22 @@
             <h3>Veladores</h3>
           </div>
         </ion-col>         -->
-        
+
       </ion-segment>
     </div>
-      
+
   </div>
-  
+
   <div class="title">
-    <ion-text style="color:#2C33FF;" >
-      <h2>Empresas</h2>
+    <ion-text style="color:#000000;">
+      <h2><b>Empresas</b></h2>
     </ion-text>
   </div>
 
-  <div >
-    <ion-list style="border-radius: 18px;">
-      <ion-item *ngFor="let vendedor of vendedores | filtro: textoBuscar" >
+  <div>
+    <ion-list style="border-radius: 15px;">
+    <!-- <ion-list> -->
+      <ion-item *ngFor="let vendedor of vendedores | filtro: textoBuscar">
         <ion-grid (click)="showDetails(vendedor.uid_vendedor, vendedor.image_vendedor, vendedor.nombre_empresa)">
           <ion-row>
             <ion-col size="4">
@@ -103,8 +104,8 @@
               </ion-avatar>
             </ion-col>
             <ion-col size="5">
-              <ion-text style="font-size: 15px; ">
-                <h5>{{vendedor.nombre_empresa}}</h5>               
+              <ion-text style="font-size: 15px; color: white;">
+                <h5><b>{{vendedor.nombre_empresa}}</b></h5>
               </ion-text>
             </ion-col>
           </ion-row>
@@ -154,8 +155,4 @@
   </div>
   
   -->
-  
-  
-  
-  
 </ion-content>
