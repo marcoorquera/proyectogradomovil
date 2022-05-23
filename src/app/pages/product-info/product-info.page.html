@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{nom_empresa}}   </ion-title>
-    <ion-button (click)="validationExit()" fill="clear" slot="end">
+    <ion-title>{{nom_empresa}}</ion-title>
+    <ion-button class="closeButton" (click)="validationExit()" fill="clear" slot="end">
       <ion-icon slot="end" name="close-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -17,7 +17,7 @@
     <div style="width: 98%; margin-left: auto; margin-right: auto;">
       <ion-segment  style="--overflow: hidden;" scrollable>
         <ion-col *ngFor="let cat of categoria_duplicada" >
-          <ion-button style="width: 130px;" (click)="listByCategory(cat.categoria)" fill="solid" color="primary" shape="round">
+          <ion-button class="boxCategories" (click)="listByCategory(cat.categoria)" fill="solid">
             {{cat.categoria}}
           </ion-button>
         </ion-col>
@@ -25,8 +25,6 @@
       </ion-segment>      
     </div>
     
-    
-
     <!--
     <div [hidden]="false" class="main" *ngFor="let producto of categorySelected | filtroProd: textoBuscarProd">
       <div (click)="modalPedido(producto.nombre_producto, producto.empresa, producto.descripcion, producto.categoria, producto.cantidad, producto.precio, producto.id, producto.imagen)" class="card_prod">
@@ -56,14 +54,14 @@
       
         <div (click)="modalPedido(p.empresa_proveedor, p.id_prod, p.nombre_producto, p.empresa_proveedor, p.descripcion_producto, p.categoria_producto, p.cantidad_producto, p.precio_producto, p.image_producto,p.url3D)" class="card_prod">
           <div class="div1">
-            <p style="color: #3880ff"><b>{{p.nombre_producto}}</b></p>
+            <p><b>{{p.nombre_producto}}</b></p>
           </div>
           <div class="div2">
             <img class="img_prod" [src]="p.image_producto">
           </div>
           <div class="div3">
-            <ion-text color="primary">
-              <p style="color: #3880ff;width: 185px;
+            <ion-text color="black">
+              <p style="width: 185px;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden; ">{{p.descripcion_producto}}</p>
@@ -71,7 +69,7 @@
             <p style="opacity: 0.5;">{{p.categoria_producto}}</p>
           </div>
           <div class="div4">
-            <p style="color: #28ba62"><b>{{p.precio_producto}} $</b></p>
+            <p class="productPrice"><b>{{p.precio_producto}} $</b></p>
           </div>
         </div>
         
@@ -81,14 +79,14 @@
       <div [hidden]="mainProds" class="main" *ngFor="let prod of filtrlistprodExist | filtroProd: textoBuscarProd">
         <div (click)="modalPedido(prod.empresa_proveedor, prod.id_prod, prod.nombre_producto, prod.empresa_proveedor, prod.descripcion_producto, prod.categoria_producto, prod.cantidad_producto, prod.precio_producto, prod.image_producto,prod.url3D)" class="card_prod">
           <div class="div1">
-            <p style="color: #3880ff"><b>{{prod.nombre_producto}}</b></p>
+            <p><b>{{prod.nombre_producto}}</b></p>
           </div>
           <div class="div2">
             <img class="img_prod" [src]="prod.image_producto">
           </div>
           <div class="div3">
-            <ion-text color="primary">
-              <p style="color: #3880ff;width: 185px;
+            <ion-text>
+              <p style="width: 185px;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;">{{prod.descripcion_producto}}</p>
@@ -96,22 +94,22 @@
             <p style="opacity: 0.5;">{{prod.categoria_producto}}</p>
           </div>
           <div class="div4">
-            <p style="color: #28ba62"><b>{{prod.precio_producto}} $</b></p>
+            <p class="productPrice"><b>{{prod.precio_producto}} $</b></p>
           </div>
         </div>  
       </div>
       <div [hidden]="selection" class="main" *ngFor="let producto of filtrprodsCategoryExist | filtroProd: textoBuscarProd">
         <div (click)="modalPedido(producto.empresa_proveedor, producto.id_prod, producto.nombre_producto, producto.empresa_proveedor, producto.descripcion_producto, producto.categoria_producto, producto.cantidad_producto, producto.precio_producto, producto.image_producto,producto.url3D)" class="card_prod">
           <div class="div1">
-            <p style="color: #3880ff"><b>{{producto.nombre_producto}}   </b></p>
+            <p><b>{{producto.nombre_producto}}   </b></p>
           </div>
           
           <div class="div2">
             <img class="img_prod" [src]="producto.image_producto">
           </div>
           <div class="div3">
-            <ion-text color="primary">
-              <p style="color: #3880ff;width: 185px;
+            <ion-text color="black">
+              <p style="width: 185px;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;">{{producto.descripcion_producto}}</p>
@@ -119,7 +117,7 @@
             <p style="opacity: 0.5;">{{producto.categoria_producto}}</p>
           </div>
           <div class="div4">
-            <p style="color: #28ba62"><b>{{producto.precio_producto}} $</b></p>
+            <p class="productPrice"><b>{{producto.precio_producto}} $</b></p>
           </div>
         </div>   
         
@@ -173,9 +171,9 @@
     
   </div>
 
-  <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty" class="pedido">
+  <div class="pedido" id="boton_pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty">
     <button class="pedido-button">
-      pedidos  {{text}}
+      Pedidos
     </button>  
   </div>
 </ion-content>

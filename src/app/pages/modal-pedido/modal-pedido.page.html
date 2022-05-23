@@ -1,38 +1,37 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Pedido</ion-title>
-    <ion-button (click)="exit()" fill="clear" slot="end">
+    <ion-button class="closeButton" (click)="exit()" fill="clear" slot="end">
       <ion-icon slot="end" name="close-circle-outline"></ion-icon>
-
-      Cerrar</ion-button>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+
   <img style="width: 100%; height: 200px;" [src]="image">
-  <div style=" color: #3880ff; width: 95%; margin-left: auto; margin-right: auto;">
-    <h2 style="color: #3880ff; font-weight: bold;">{{nombre}}</h2>
+  <div style="width: 95%; margin-left: auto; margin-right: auto;">
+    <h2 style="font-weight: bold;">{{nombre}}</h2>
     <p>{{descripcion}}</p>
-    <h3 style="color: #3880ff; font-weight: bold;">${{precio}}</h3>
+    <h3 style="font-weight: bold;">${{precio}}</h3>
   </div>
   <div class="contador">
     <div class="unidades">
       <div class="div1">
-        <h3  style=" color: #3880ff; font-weight: bold;">Unidades</h3>
+        <h3 style="font-weight: bold;">Unidades</h3>
       </div>
       <div style="padding-top: 10%;" class="div2">
-        <ion-button disabled="{{isDisabled}}" (click)="suma()" shape="round">
+        <ion-button class="secondaryButton" disabled="{{isDisabled}}" (click)="suma()">
           <ion-icon name="add-circle-outline"></ion-icon>
         </ion-button>
       </div>
       <div style="padding-top: 5%; margin-right: auto; margin-left: auto; width: 40%;" class="div3">
-        <ion-input value="{{pedido}}" style="color: #3880ff; text-align: center;">
-        
+        <ion-input value="{{pedido}}" style="text-align: center;">
+
         </ion-input>
       </div>
       <div style=" padding-top: 10%;" class="div4">
-        <ion-button disabled="{{isDisabled}}" (click)="resta()" shape="round">
+        <ion-button class="secondaryButton" disabled="{{isDisabled}}" (click)="resta()">
           <ion-icon name="remove-circle-outline"></ion-icon>
         </ion-button>
       </div>
@@ -48,20 +47,15 @@
         Ver en 3D
       </ion-button> -->
 
-      <ion-button expand="full"   *ngIf="!s1" disabled={{s}} (click)="abrir()" href={{url3D}}  shape="round"> 
+      <ion-button class="secondaryButton" expand="block" *ngIf="!s1" disabled={{s}} (click)="abrir()" href={{url3D}}>
         Ver en 3D
       </ion-button>
-    
-     
-      
-     
-    </div>
 
+    </div>
   </div>
 
-  
   <div style="width:100%; margin-left: auto; margin-right: auto; position: absolute; bottom: 20px;">
-    <ion-button (click)="contactoEmpresa(user_id, nombre, total_prod, pedido, image, total_prod)"  shape="round" expand="full" size="large">
+    <ion-button class="primaryButton" (click)="contactoEmpresa(user_id, nombre, total_prod, pedido, image, total_prod)" expand="block" fill="solid">
       <p>Agregar a mi pedido {{total_prod}}$</p>
     </ion-button>
   </div>

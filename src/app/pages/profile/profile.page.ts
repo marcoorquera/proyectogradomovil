@@ -81,7 +81,6 @@ export class ProfilePage implements OnInit {
   editProfile(){
     this.isDisabled = false;
     this.saveChanges = true;
-    
   }
 
   takePicture(){
@@ -118,7 +117,7 @@ export class ProfilePage implements OnInit {
   GuardarCambios(){
     
     this.saveChanges=false;     
-    this.isDisabled = false;
+    this.isDisabled = true;
     this.afAuth.onAuthStateChanged(user => {
       if(user){
         this.afs.database.ref('usuario/'+user.uid).update({
@@ -158,13 +157,13 @@ export class ProfilePage implements OnInit {
         
         {
           name: 'password',
-          placeholder: 'New Password',
+          placeholder: 'Nueva Contraseña',
           type: 'password'
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           handler: data => {
             

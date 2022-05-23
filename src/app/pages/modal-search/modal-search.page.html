@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Búsqueda</ion-title>
-    <ion-button (click)="validationExit()" fill="clear" slot="end">
+    <ion-title>Busqueda</ion-title>
+    <ion-button class="closeButton" (click)="validationExit()" fill="clear" slot="end">
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -10,28 +10,29 @@
 <ion-content>
 
 
-  <div class="opciones">
-    <div class="ruleta">
-      <ion-segment style="--overflow: hidden;" scrollable>
+  <ion-segment style="--overflow: hidden;" scrollable>
+    <ion-grid>
+      <ion-row>
+
         <ion-col>
-          <ion-button shape="round" (click)="showEmpresas()">
+          <ion-button expand="block" class="buttonCategories" (click)="showEmpresas()">
             Empresas
           </ion-button>
         </ion-col>
         <!-- <ion-col>
-          <ion-button shape="round" (click)="showProductCategory()">
-            categorias
-          </ion-button>
-        </ion-col> -->
+              <ion-button shape="round" (click)="showProductCategory()">
+                categorias
+              </ion-button>
+            </ion-col> -->
         <ion-col>
-          <ion-button shape="round" (click)="showProductos()">
+          <ion-button expand="block" class="buttonCategories" (click)="showProductos()">
             Producto
           </ion-button>
         </ion-col>
-      </ion-segment>
-    </div>
-  </div>
 
+      </ion-row>
+    </ion-grid>
+  </ion-segment>
 
   <div>
     <div [hidden]="empresasEnable" class="empresas">
@@ -81,9 +82,11 @@
           <div class="div2">
             <img class="img_prod" [src]="producto.image_producto">
           </div>
-          <div class="div3">
-            <ion-text color="primary">
-              <h1>{{producto.nombre_producto}}</h1>
+          <div class="tittle_products">
+            <ion-text>
+              <h3>
+                {{producto.nombre_producto}}
+              </h3>
             </ion-text>
 
           </div>
@@ -93,15 +96,15 @@
         </div>
 
       </div>
-     
+
 
     </div>
 
   </div>
 </ion-content>
 
-<div class="pedido" id="boton_pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty"  class="pedido">
+<div class="pedido" id="boton_pedido" (click)="goToPedidoList()" [hidden]="prepedidoIsEmpty">
   <button class="pedido-button">
-    pedidos
+    Pedidos
   </button>
 </div>

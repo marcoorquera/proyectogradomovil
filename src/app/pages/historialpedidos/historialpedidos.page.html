@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Mis Pedidos</ion-title>
-    <ion-button (click)="close()" fill="clear" slot="end">
+    <ion-button class="closeButton" (click)="close()" fill="clear" slot="end">
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -19,19 +19,19 @@
         </ion-card-header>
         <ion-card-content>
 
-          <h4>Telefono: {{pedido.telefono}}</h4> 
+          <h4><b>Telefono:</b> {{pedido.telefono}}</h4> 
 
-          <h4>Email: {{pedido.email}}</h4> 
+          <h4><b>Email:</b> {{pedido.email}}</h4> 
 
-          <h4>precio unitario: ${{pedido.precio_uni}}</h4>
+          <h4><b>Precio unitario:</b> ${{pedido.precio_uni}}</h4>
           
-          <h4>Cantidad: {{pedido.cantidad_pedido}}</h4>
+          <h4><b>Cantidad:</b> {{pedido.cantidad_pedido}}</h4>
 
-          <h4>Precio final: ${{pedido.precio_pedido}}</h4>
+          <h4><b>Precio final:</b> ${{pedido.precio_pedido}}</h4>
 
-          <h4>Dirección: {{pedido.direccion_vendedor}}</h4>
+          <h4><b>Dirección:</b> {{pedido.direccion_vendedor}}</h4>
 
-          <h4>Fecha del pedido: {{pedido.fecha}}</h4>
+          <h4><b>Fecha del pedido:</b> {{pedido.fecha}}</h4>
         </ion-card-content>
       </ion-card>
       <!-- <div >

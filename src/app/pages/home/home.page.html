@@ -10,7 +10,6 @@
 <ion-content class="ion-padding">
   <div (click)="modalSearch()" class="searchbar">
     <ion-searchbar placeholder="Buscar" disabled="true" animated (ionChange)="buscar( $event )"></ion-searchbar>
-    <!-- <ion-icon slot="start" name="search-outline"></ion-icon> -->
   </div>
   <div class="title">
     <ion-text style="color:#000000;">
@@ -113,9 +112,9 @@
       </ion-item>
     </ion-list>
 
-    <div class="pedido" id="boton_pedido" style="display: none;" (click)="goToPedidoList()" class="pedido">
+    <div class="pedido" id="boton_pedido" style="display: none;" (click)="goToPedidoList()">
       <button class="pedido-button">
-        pedidos
+        Pedidos
       </button>
     </div>
   </div>

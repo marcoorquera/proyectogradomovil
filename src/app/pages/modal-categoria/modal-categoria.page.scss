@@ -1,35 +1,51 @@
-ion-content{
-    --ion-background-color:#ffffff;
+ion-content {
+    --ion-background-color: #ffffff;
 }
 
-ion-card{
-    border-radius: 20px;
+ion-toolbar {
+    --background: #2f4f4f;
+}
+
+ion-title {
+    color: white;
+}
+
+.closeButton {
+    --color:white;
+}
+
+.titleProduct {
+    color: black;
+}
+
+.priceText {
+    color: #2f4f4f;
+    font-size: 20px;
+}
+
+ion-card {
+    border-radius: 15px;
     background: #ffffff;
-    box-shadow:  -9px 9px 26px #d1d1d1,
-             9px -9px 26px #ffffff;
 }
 
-.searchbar{
-    background-color: #2C33FF;
-    margin-top: 20px;
-    border-radius: 30px;
+.searchbar {
+    background-color: #2e4447;
+    border-radius: 15px;
     width: 90%;
     height: 60px;
     margin-right: auto;
     margin-left: auto;
-    box-shadow:  7px 7px 14px #d9d9d9,
-             -7px -7px 14px #ffffff;
-
+    margin-top: 5%;
 }
 
-ion-searchbar{
-    --ion-background-color:#2C33FF;
-    
+ion-searchbar {
     margin-left: auto;
     margin-right: auto;
     width: 80%;
+    --color: white;
 }
-.pedido{
+
+.pedido {
     width: 90%;
     height: 60px;
     margin-left: auto;
@@ -37,19 +53,16 @@ ion-searchbar{
     margin-bottom: 1vh;
 }
 
-button{ 
-    width: 100%;
+button {
+    background: #4f2f2f;
+    width: 80%;
     height: 50px;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 30px;
-    background-color: #4970F0;
+    border-radius: 15px;
     color: white;
     position: fixed;
-    bottom: 8px;;
+    bottom: 8px;
     left: 0;
     right: 0;
-    -webkit-box-shadow: 7px 7px 18px -8px rgba(0,0,0,0.75);
-    -moz-box-shadow: 7px 7px 18px -8px rgba(0,0,0,0.75);
-    box-shadow: 7px 7px 18px -8px rgba(0,0,0,0.75);
-  }
+}

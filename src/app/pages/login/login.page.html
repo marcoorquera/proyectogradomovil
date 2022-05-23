@@ -31,16 +31,23 @@
         </div>
       </ng-container>
     </div>
-    <ion-button style="font-family: 'Nunito Sans', sans-serif;" class="submit-btn" type="submit"
+    <!-- <ion-button style="font-family: 'Nunito Sans', sans-serif;" class="submit-btn" type="submit"
       [disabled]="!validations_form.valid" expand="block" fill="solid" size="default" color="success">Entrar
-    </ion-button>
+    </ion-button> -->
+
+    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid" expand="block" fill="solid"
+      size="default">Entrar
+    </ion-button> <label class="error-message">{{errorMessage}}</label>
 
     <label class="error-message">{{errorMessage}}</label>
   </form>
-  <div class="ion-text-center ion-margin-top">
-    <a routerLink="/reset-password"><small>Olvide mi contraseña</small></a>
-  </div>
-  <div style="text-align: center; margin-top: 5%;" class="item ">
-    <a (click)="goToRegister()"><u>Crear una cuenta</u></a>
+  <ion-button class="forgotPassword" routerLink="/reset-password" fill="solid" expand="block">
+    Olvide mi contraseña
+  </ion-button>
+
+  <div style="text-align: center;" class="item ">
+    <ion-button class="createAccount" (click)="goToRegister()" fill="solid" expand="block">
+      Registrarse
+    </ion-button>
   </div>
 </ion-content>
