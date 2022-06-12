@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.muebleria.global',
-  appName: 'muebleriaApp',
+  appName: 'Global Muebles',
   webDir: 'www',
   bundledWebRuntime: false
 };
